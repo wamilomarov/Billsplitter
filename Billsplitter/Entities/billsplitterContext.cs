@@ -1,17 +1,25 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace Billsplitter.Entities
 {
     public partial class billsplitterContext : DbContext
     {
+        private readonly IConfiguration _config;
+        public billsplitterContext(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
+
         public billsplitterContext(DbContextOptions<billsplitterContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<Currencies> Currencies { get; set; }
+        public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<GroupsUsers> GroupsUsers { get; set; }
         public virtual DbSet<HaveToBuyList> HaveToBuyList { get; set; }
@@ -26,8 +34,7 @@ namespace Billsplitter.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;userid=billsplitter;pwd=rvwvvCArx4Pm8PfD;port=3306;database=billsplitter;sslmode=none;");
+                optionsBuilder.UseMySql(_config["ConnectionString:Default"]);
             }
         }
 
@@ -48,14 +55,32 @@ namespace Billsplitter.Entities
                     .HasColumnType("varchar(255)");
             });
 
+            modelBuilder.Entity<Efmigrationshistory>(entity =>
+            {
+                entity.HasKey(e => e.MigrationId);
+
+                entity.ToTable("__efmigrationshistory");
+
+                entity.Property(e => e.MigrationId).HasColumnType("varchar(95)");
+
+                entity.Property(e => e.ProductVersion)
+                    .IsRequired()
+                    .HasColumnType("varchar(32)");
+            });
+
             modelBuilder.Entity<Groups>(entity =>
             {
                 entity.ToTable("groups");
+
+                entity.HasIndex(e => e.CreatedByUserId)
+                    .HasName("GroupCreatedByUserId");
 
                 entity.HasIndex(e => e.CurrencyId)
                     .HasName("GroupCurrencyId");
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.CreatedByUserId).HasColumnType("int(11)");
 
                 entity.Property(e => e.CurrencyId).HasColumnType("int(11)");
 
@@ -66,6 +91,11 @@ namespace Billsplitter.Entities
                 entity.Property(e => e.PhotoUrl)
                     .IsRequired()
                     .HasColumnType("varchar(255)");
+
+                entity.HasOne(d => d.CreatedByUser)
+                    .WithMany(p => p.Groups)
+                    .HasForeignKey(d => d.CreatedByUserId)
+                    .HasConstraintName("GroupCreatedByUserId");
 
                 entity.HasOne(d => d.Currency)
                     .WithMany(p => p.Groups)

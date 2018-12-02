@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Billsplitter.Entities
 {
     public partial class Users
     {
-              public Users()
+        public Users()
         {
+            Groups = new HashSet<Groups>();
             GroupsUsers = new HashSet<GroupsUsers>();
             HaveToBuyList = new HashSet<HaveToBuyList>();
             Products = new HashSet<Products>();
@@ -25,6 +25,7 @@ namespace Billsplitter.Entities
         public string EmailVerificationCode { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public ICollection<Groups> Groups { get; set; }
         public ICollection<GroupsUsers> GroupsUsers { get; set; }
         public ICollection<HaveToBuyList> HaveToBuyList { get; set; }
         public ICollection<Products> Products { get; set; }

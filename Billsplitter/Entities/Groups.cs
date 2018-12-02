@@ -17,8 +17,10 @@ namespace Billsplitter.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string PhotoUrl { get; set; }
+        public int CreatedByUserId { get; set; }
         public int CurrencyId { get; set; }
 
+        public Users CreatedByUser { get; set; }
         public Currencies Currency { get; set; }
         public ICollection<GroupsUsers> GroupsUsers { get; set; }
         public ICollection<HaveToBuyList> HaveToBuyList { get; set; }

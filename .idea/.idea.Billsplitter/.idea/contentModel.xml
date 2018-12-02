@@ -16,6 +16,7 @@
         <e p="Entities" t="Include">
           <e p="billsplitterContext.cs" t="Include" />
           <e p="Currencies.cs" t="Include" />
+          <e p="Efmigrationshistory.cs" t="Include" />
           <e p="Groups.cs" t="Include" />
           <e p="GroupsUsers.cs" t="Include" />
           <e p="HaveToBuyList.cs" t="Include" />
