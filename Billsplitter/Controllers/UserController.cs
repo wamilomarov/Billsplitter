@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 namespace Billsplitter.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
 
         private readonly IConfiguration _config;
@@ -46,7 +46,7 @@ namespace Billsplitter.Controllers
 
             if (uploadResult.Error != null)
             {
-                ModelState.AddModelError("Photo", uploadResult.Error.Message.ToString());
+                ModelState.AddModelError("Photo", uploadResult.Error.Message);
                 return BadRequest(ModelState);
             }
 
@@ -80,8 +80,8 @@ namespace Billsplitter.Controllers
             };
             
             user.GenerateToken();
-
-            return Ok(user);
+            
+            return Ok(JsonResponse<User>.GenerateResponse(user));
         }
 
         [HttpPost("login")]
@@ -122,7 +122,7 @@ namespace Billsplitter.Controllers
             
             user.GenerateToken();
 
-            return Ok(user);
+            return Ok(JsonResponse<User>.GenerateResponse(user));
 
         }
 

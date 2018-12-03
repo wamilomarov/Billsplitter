@@ -8,6 +8,7 @@ using Billsplitter.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -58,7 +59,10 @@ namespace Billsplitter
                     }
                 ));
             
-            services.AddRouteAnalyzer(); 
+            services.AddRouteAnalyzer();
+            services.AddMvcCore().AddJsonFormatters();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         }
 

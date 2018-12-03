@@ -10,6 +10,8 @@
         <e p="Billsplitter.csproj" t="IncludeRecursive" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="Controllers" t="Include">
+          <e p="CurrencyController.cs" t="Include" />
+          <e p="GroupController.cs" t="Include" />
           <e p="UserController.cs" t="Include" />
           <e p="ValuesController.cs" t="Include" />
         </e>
@@ -27,7 +29,14 @@
           <e p="RepeatingPurchases.cs" t="Include" />
           <e p="Users.cs" t="Include" />
         </e>
+        <e p="Helpers" t="Include">
+          <e p="ImageUploader.cs" t="Include" />
+          <e p="JsonResponse.cs" t="Include" />
+          <e p="Pagination.cs" t="Include" />
+        </e>
         <e p="Models" t="Include">
+          <e p="Currency.cs" t="Include" />
+          <e p="Group.cs" t="Include" />
           <e p="User.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">

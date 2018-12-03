@@ -1,16 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace Billsplitter.Entities
 {
     public partial class billsplitterContext : DbContext
     {
-        private readonly IConfiguration _config;
-        public billsplitterContext(IConfiguration configuration)
+        public billsplitterContext()
         {
-            _config = configuration;
         }
 
         public billsplitterContext(DbContextOptions<billsplitterContext> options)
@@ -34,7 +31,8 @@ namespace Billsplitter.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(_config["ConnectionString:Default"]);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=localhost;userid=billsplitter;pwd=rvwvvCArx4Pm8PfD;port=3306;database=billsplitter;sslmode=none;");
             }
         }
 
@@ -45,10 +43,6 @@ namespace Billsplitter.Entities
                 entity.ToTable("currencies");
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
-
-                entity.Property(e => e.IconUrl)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
