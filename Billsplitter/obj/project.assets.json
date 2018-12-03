@@ -4442,10 +4442,11 @@
   },
   "libraries": {
     "AspNetCore.RouteAnalyzer/0.5.1": {
-      "sha512": "fMLX/jfiM/QViuZYKDOYQirZYYHoIrhGan+6PqPNI6OgTNv16rcFfvjqc7YEHZF+GHF006ZtDKCCXC/8BPx62A==",
+      "sha512": "slxBURm28TfZPlVdpOLKTa9MrBVlMgxSb5aX8Sjko/vFVXm09UaS9VBYod0554vO4tzIOqhiUJQSabjTQ+4f6g==",
       "type": "package",
       "path": "aspnetcore.routeanalyzer/0.5.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "aspnetcore.routeanalyzer.0.5.1.nupkg.sha512",
         "aspnetcore.routeanalyzer.nuspec",
@@ -4454,10 +4455,11 @@
       ]
     },
     "CloudinaryDotNet/1.5.0": {
-      "sha512": "INoJjtb+cv0oaTbqyEoBbuNso3FCRgYC26f2Ps6h696c4QHHqN9PkkhUwQNIL84rL/aOXcw2AuvChfUjrwp4uQ==",
+      "sha512": "z8oEX/K3PHUpX67CVCdnll6NHIRfnkQEEQI+iIXhvsmLJqmgHZ/0w9UE6JfhrivXLi+Wq1/wLiK16IIpw47oGw==",
       "type": "package",
       "path": "cloudinarydotnet/1.5.0",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "cloudinarydotnet.1.5.0.nupkg.sha512",
         "cloudinarydotnet.nuspec",
@@ -12022,11 +12024,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Work\\Web Development\\Billsplitter\\Billsplitter\\Billsplitter.csproj",
+      "projectUniqueName": "D:\\Work\\Web Development\\BillSplitter\\Billsplitter\\Billsplitter.csproj",
       "projectName": "Billsplitter",
-      "projectPath": "D:\\Work\\Web Development\\Billsplitter\\Billsplitter\\Billsplitter.csproj",
+      "projectPath": "D:\\Work\\Web Development\\BillSplitter\\Billsplitter\\Billsplitter.csproj",
       "packagesPath": "C:\\Users\\shami\\.nuget\\packages\\",
-      "outputPath": "D:\\Work\\Web Development\\Billsplitter\\Billsplitter\\obj\\",
+      "outputPath": "D:\\Work\\Web Development\\BillSplitter\\Billsplitter\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12094,7 +12096,6 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

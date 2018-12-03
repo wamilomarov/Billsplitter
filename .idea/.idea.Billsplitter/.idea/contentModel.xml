@@ -37,6 +37,7 @@
         <e p="Models" t="Include">
           <e p="Currency.cs" t="Include" />
           <e p="Group.cs" t="Include" />
+          <e p="ProductCategory.cs" t="Include" />
           <e p="User.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">

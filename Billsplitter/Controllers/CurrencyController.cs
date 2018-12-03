@@ -32,13 +32,11 @@ namespace Billsplitter.Controllers
             IQueryable<Currencies> currenciesList;
             if (!string.IsNullOrEmpty(query))
             {
-                Console.WriteLine("here1");
                 currenciesList = _context.Currencies.OrderBy(c => c.Name)
                     .Where(c => EF.Functions.Like(c.Name, $"%{query}%"));
             }
             else
             {
-                Console.WriteLine("here2");
                 currenciesList = _context.Currencies.OrderBy(c => c.Name);
             }
             

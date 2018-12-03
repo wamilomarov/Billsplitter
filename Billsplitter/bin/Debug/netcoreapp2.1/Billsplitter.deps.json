@@ -3317,14 +3317,14 @@
     "AspNetCore.RouteAnalyzer/0.5.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fMLX/jfiM/QViuZYKDOYQirZYYHoIrhGan+6PqPNI6OgTNv16rcFfvjqc7YEHZF+GHF006ZtDKCCXC/8BPx62A==",
+      "sha512": "sha512-slxBURm28TfZPlVdpOLKTa9MrBVlMgxSb5aX8Sjko/vFVXm09UaS9VBYod0554vO4tzIOqhiUJQSabjTQ+4f6g==",
       "path": "aspnetcore.routeanalyzer/0.5.1",
       "hashPath": "aspnetcore.routeanalyzer.0.5.1.nupkg.sha512"
     },
     "CloudinaryDotNet/1.5.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-INoJjtb+cv0oaTbqyEoBbuNso3FCRgYC26f2Ps6h696c4QHHqN9PkkhUwQNIL84rL/aOXcw2AuvChfUjrwp4uQ==",
+      "sha512": "sha512-z8oEX/K3PHUpX67CVCdnll6NHIRfnkQEEQI+iIXhvsmLJqmgHZ/0w9UE6JfhrivXLi+Wq1/wLiK16IIpw47oGw==",
       "path": "cloudinarydotnet/1.5.0",
       "hashPath": "cloudinarydotnet.1.5.0.nupkg.sha512"
     },

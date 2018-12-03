@@ -16,7 +16,7 @@ namespace Billsplitter.Entities
         public string Name { get; set; }
         public int GroupId { get; set; }
         public string PhotoUrl { get; set; }
-        public decimal Price { get; set; }
+        public int Type { get; set; }
         public string BarCode { get; set; }
         public int AddedByUserId { get; set; }
         public int MeasureId { get; set; }

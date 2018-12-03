@@ -213,7 +213,7 @@ namespace Billsplitter.Entities
                     .IsRequired()
                     .HasColumnType("varchar(255)");
 
-                entity.Property(e => e.Price).HasColumnType("decimal(15,2)");
+                entity.Property(e => e.Type).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.AddedByUser)
                     .WithMany(p => p.Products)

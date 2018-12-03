@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Billsplitter.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace Billsplitter.Models
@@ -12,7 +13,9 @@ namespace Billsplitter.Models
         public int CreatedByUserId { get; set; }
         [Required]
         public int CurrencyId { get; set; }
-
+        [Required]
         public List<string> Members { get; set; }
+        public Currencies Currency { get; set; }
+        public Users CreatedByUser { get; set; }
     }
 }
