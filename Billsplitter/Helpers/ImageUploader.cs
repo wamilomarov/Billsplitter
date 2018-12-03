@@ -1,6 +1,7 @@
 using System.IO;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace Billsplitter.Models
@@ -21,11 +22,11 @@ namespace Billsplitter.Models
             cloudinary = new Cloudinary(this.cloudinaryAccount);
         }
 
-        public UploadResult upload(string fileName, Stream openReadStream)
+        public UploadResult upload(IFormFile file)
         {
             var uploadParams = new ImageUploadParams()
             {
-                File = new FileDescription(fileName, openReadStream),
+                File = new FileDescription(file.FileName, file.OpenReadStream()),
             };
             return cloudinary.Upload(uploadParams);
         }

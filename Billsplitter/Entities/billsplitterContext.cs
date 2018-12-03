@@ -6,9 +6,9 @@ namespace Billsplitter.Entities
 {
     public partial class billsplitterContext : DbContext
     {
-        public billsplitterContext()
-        {
-        }
+//        public billsplitterContext()
+//        {
+//        }
 
         public billsplitterContext(DbContextOptions<billsplitterContext> options)
             : base(options)

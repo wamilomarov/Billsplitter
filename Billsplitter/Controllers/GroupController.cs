@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using Billsplitter.Entities;
 using Billsplitter.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace Billsplitter.Controllers
 {
+    [Route("api/[controller]")]
     public class GroupController : ControllerBase
     {
         private readonly IConfiguration _config;
@@ -20,8 +23,8 @@ namespace Billsplitter.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] Group request, [FromBody] List<string> members)
+        [HttpPost, Authorize]
+        public IActionResult Post([FromForm] Group request)
         {
             if (!ModelState.IsValid)
             {
@@ -29,7 +32,7 @@ namespace Billsplitter.Controllers
             }
 
             var imageUploader = new ImageUploader(_config);
-            var uploadResult = imageUploader.upload(request.Photo.FileName, request.Photo.OpenReadStream());
+            var uploadResult = imageUploader.upload(request.Photo);
             
             if (uploadResult.Error != null)
             {
@@ -38,9 +41,13 @@ namespace Billsplitter.Controllers
             }
             
             var currentUser = HttpContext.User;
+            Console.WriteLine("Shamil");
+            Console.WriteLine(currentUser);
             Users user = _context.Users
                 .FirstOrDefault(u =>
-                    u.Id == Int32.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value));
+                    u.Id == Int32.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid).Value));
+            Console.WriteLine("Shamil1");
+
             Groups group = new Groups()
             {
                 CurrencyId = request.CurrencyId,
@@ -48,6 +55,8 @@ namespace Billsplitter.Controllers
                 Name = request.Name,
                 PhotoUrl = uploadResult.PublicId
             };
+            Console.WriteLine("Shamil2");
+
             
             _context.Groups.Add(group);
             _context.SaveChanges();
@@ -61,7 +70,7 @@ namespace Billsplitter.Controllers
             _context.GroupsUsers.Add(groupAdmin);
             _context.SaveChanges();
 
-            foreach (var member in members)
+            foreach (var member in request.Members)
             {
                
                 var memberData = _context.Users.FirstOrDefault(u => u.Email == member);
