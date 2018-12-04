@@ -33,7 +33,9 @@ namespace Billsplitter.Entities
                 return "https://res.cloudinary.com/billsplitter/image/upload/c_fill,h_150,w_150/" + PhotoUrl;
             }
         }
-
+        
+        [IgnoreDataMember]
+        public string FacebookId { get; set; }
         [IgnoreDataMember]
         public string Password { get; set; }
         [IgnoreDataMember]

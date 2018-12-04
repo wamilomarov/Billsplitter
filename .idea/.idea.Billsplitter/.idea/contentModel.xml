@@ -12,6 +12,7 @@
         <e p="Controllers" t="Include">
           <e p="CurrencyController.cs" t="Include" />
           <e p="GroupController.cs" t="Include" />
+          <e p="ProductController.cs" t="Include" />
           <e p="UserController.cs" t="Include" />
           <e p="ValuesController.cs" t="Include" />
         </e>
@@ -36,7 +37,9 @@
         </e>
         <e p="Models" t="Include">
           <e p="Currency.cs" t="Include" />
+          <e p="GoogleUser.cs" t="Include" />
           <e p="Group.cs" t="Include" />
+          <e p="Product.cs" t="Include" />
           <e p="ProductCategory.cs" t="Include" />
           <e p="User.cs" t="Include" />
         </e>

@@ -19,6 +19,7 @@ namespace Billsplitter.Entities
         public string Name { get; set; }
         [IgnoreDataMember]
         public string PhotoUrl { get; set; }
+        [IgnoreDataMember]
         public string Photo => "https://res.cloudinary.com/billsplitter/image/upload/c_fill,h_150,w_150/" + PhotoUrl;
         [IgnoreDataMember]
         public int CreatedByUserId { get; set; }

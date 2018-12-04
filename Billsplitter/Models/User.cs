@@ -2,8 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text;
+using Billsplitter.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,10 +21,22 @@ namespace Billsplitter.Models
             _config = config;
         }
 
+        public User(IConfiguration config, Users userData)
+        {
+            _config = config;
+            FullName = userData.FullName;
+            Email = userData.Email;
+            Photo = userData.Photo;
+            CreatedAt = userData.CreatedAt;
+        }
+        
         public int Id { get; set; }
+        [DataMember(Name = "name")]
         public string FullName { get; set; }
+        [DataMember(Name = "email")]
         public string Email { get; set; }
-        public string PhotoUrl { get; set; }
+        [DataMember(Name = "picture")]
+        public string Photo { get; set; }
         public string EmailVerificationCode { get; set; }
         public string ApiToken { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
@@ -34,9 +48,8 @@ namespace Billsplitter.Models
                 new Claim(JwtRegisteredClaimNames.Sid, this.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, this.FullName),
                 new Claim(JwtRegisteredClaimNames.Email, this.Email),
-                new Claim("PhotoUrl", this.PhotoUrl),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("EmailVerificationCode", this.EmailVerificationCode)
+                new Claim("Photo", this.Photo),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

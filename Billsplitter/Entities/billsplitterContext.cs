@@ -385,6 +385,10 @@ namespace Billsplitter.Entities
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasColumnType("varchar(255)");
+                
+                entity.Property(e => e.FacebookId)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
