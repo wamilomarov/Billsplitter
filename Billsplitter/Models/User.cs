@@ -24,6 +24,7 @@ namespace Billsplitter.Models
         public User(IConfiguration config, Users userData)
         {
             _config = config;
+            Id = userData.Id;
             FullName = userData.FullName;
             Email = userData.Email;
             Photo = userData.Photo;

@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Billsplitter.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace Billsplitter.Models
 {
@@ -10,9 +13,9 @@ namespace Billsplitter.Models
         public string Name { get; set; }
         [Required]
         public int GroupId { get; set; }
-        public string PhotoUrl { get; set; }
         [Required]
-        public int Type { get; set; }
+        public int CategoryId { get; set; }
+        public IFormFile Photo { get; set; }
         [Required]
         public string BarCode { get; set; }
         [Required]
@@ -20,6 +23,8 @@ namespace Billsplitter.Models
         [Required]
         public int MeasureId { get; set; }
         public DateTime CreatedAt { get; set; }
+        [Required]
+        public IEnumerable<int> Shares { get; set; }
 
     }
 }

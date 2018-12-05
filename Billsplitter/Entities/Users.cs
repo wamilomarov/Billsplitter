@@ -35,7 +35,7 @@ namespace Billsplitter.Entities
         }
         
         [IgnoreDataMember]
-        public string FacebookId { get; set; }
+        public string GoogleId { get; set; }
         [IgnoreDataMember]
         public string Password { get; set; }
         [IgnoreDataMember]

@@ -15,6 +15,7 @@ namespace Billsplitter.Entities
         {
         }
 
+        public virtual DbSet<ProductCategories> ProductCategories { get; set; }
         public virtual DbSet<Currencies> Currencies { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
@@ -31,13 +32,29 @@ namespace Billsplitter.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySql("server=localhost;userid=billsplitter;pwd=rvwvvCArx4Pm8PfD;port=3306;database=billsplitter;sslmode=none;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+            modelBuilder.Entity<ProductCategories>(entity =>
+            {
+                entity.ToTable("product_categories");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+                
+                entity.Property(e => e.Color)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+            });
+            
             modelBuilder.Entity<Currencies>(entity =>
             {
                 entity.ToTable("currencies");
@@ -182,6 +199,9 @@ namespace Billsplitter.Entities
 
                 entity.HasIndex(e => e.AddedByUserId)
                     .HasName("ProductsAddedByUserId");
+                
+                entity.HasIndex(e => e.CategoryId)
+                    .HasName("ProductCategoryId");
 
                 entity.HasIndex(e => e.GroupId)
                     .HasName("ProductGroupId");
@@ -213,12 +233,17 @@ namespace Billsplitter.Entities
                     .IsRequired()
                     .HasColumnType("varchar(255)");
 
-                entity.Property(e => e.Type).HasColumnType("int(11)");
+                entity.Property(e => e.CategoryId).HasColumnType("int(11)");
 
                 entity.HasOne(d => d.AddedByUser)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.AddedByUserId)
                     .HasConstraintName("ProductsAddedByUserId");
+                
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("ProductCategoryId");
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.Products)
@@ -244,8 +269,8 @@ namespace Billsplitter.Entities
                 entity.Property(e => e.Id).HasColumnType("int(11)");
 
                 entity.Property(e => e.IsPaid)
-                    .HasColumnType("tinyint(1)")
-                    .HasDefaultValueSql("'0'");
+                    .HasColumnType("bool")
+                    .HasDefaultValueSql("0");
 
                 entity.Property(e => e.PurchaseId).HasColumnType("int(11)");
 
@@ -277,9 +302,9 @@ namespace Billsplitter.Entities
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
 
-                entity.Property(e => e.Amount).HasColumnType("decimal(10,3)");
+//                entity.Property(e => e.Amount).HasColumnType("decimal(10,3)");
 
-                entity.Property(e => e.Comment).HasColumnType("varchar(500)");
+//                entity.Property(e => e.Comment).HasColumnType("varchar(500)");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("timestamp")
@@ -288,8 +313,12 @@ namespace Billsplitter.Entities
                 entity.Property(e => e.GroupId).HasColumnType("int(11)");
 
                 entity.Property(e => e.IsComplete)
-                    .HasColumnType("tinyint(1)")
-                    .HasDefaultValueSql("'0'");
+                    .HasColumnType("boolean")
+                    .HasDefaultValueSql("0");
+                
+                entity.Property(e => e.Show)
+                    .HasColumnType("boolean")
+                    .HasDefaultValueSql("1");
 
                 entity.Property(e => e.PaidByUserId).HasColumnType("int(11)");
 
@@ -297,9 +326,9 @@ namespace Billsplitter.Entities
 
                 entity.Property(e => e.ProductId).HasColumnType("int(11)");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)");
+//                entity.Property(e => e.Title)
+//                    .IsRequired()
+//                    .HasColumnType("varchar(255)");
 
                 entity.HasOne(d => d.Group)
                     .WithMany(p => p.Purchases)
@@ -386,7 +415,7 @@ namespace Billsplitter.Entities
                     .IsRequired()
                     .HasColumnType("varchar(255)");
                 
-                entity.Property(e => e.FacebookId)
+                entity.Property(e => e.GoogleId)
                     .IsRequired()
                     .HasColumnType("varchar(255)");
 

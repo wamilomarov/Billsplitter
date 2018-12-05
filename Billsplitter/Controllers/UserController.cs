@@ -48,7 +48,7 @@ namespace Billsplitter.Controllers
             Users userData = _context.Users.FirstOrDefault(u => u.Email == registerModel.Email);
 
             if (userData != null && !string.IsNullOrEmpty(userData.Password) &&
-                !string.IsNullOrEmpty(userData.FacebookId))
+                !string.IsNullOrEmpty(userData.GoogleId))
             {
                 ModelState.AddModelError("Email", "This email is already taken");
                 return BadRequest(ModelState);
@@ -168,12 +168,12 @@ namespace Billsplitter.Controllers
 //            return Ok(googleUser);
 
             Users check =
-                _context.Users.FirstOrDefault(u => u.FacebookId == googleUser.Sub || u.Email == googleUser.Email);
+                _context.Users.FirstOrDefault(u => u.GoogleId == googleUser.Sub || u.Email == googleUser.Email);
             User user = null;
 
             if (check != null)
             {
-                check.FacebookId = googleUser.Sub;
+                check.GoogleId = googleUser.Sub;
                 _context.Users.Update(check);
                 _context.SaveChanges();
                 user = new User(_config, check);
@@ -192,7 +192,7 @@ namespace Billsplitter.Controllers
                 {
                     FullName = googleUser.Name,
                     Email = googleUser.Email,
-                    FacebookId = googleUser.Sub,
+                    GoogleId = googleUser.Sub,
                     PhotoUrl = uploadResult.PublicId
                 };
 

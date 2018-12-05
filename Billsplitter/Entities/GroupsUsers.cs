@@ -6,9 +6,9 @@ namespace Billsplitter.Entities
 {
     public partial class GroupsUsers
     {
-        [IgnoreDataMember]
+        
         public int Id { get; set; }
-        [IgnoreDataMember]
+        
         public int UserId { get; set; }
         [IgnoreDataMember]
         public int GroupId { get; set; }
