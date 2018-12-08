@@ -204,15 +204,10 @@ namespace Billsplitter.Controllers
                 .Include(i => i.Currency)
                 .Include(i => i.GroupsUsers)
                 .ThenInclude(i => i.User)
-                .FirstOrDefault(g => g.Id == id);
-
-            var isMember = _context.GroupsUsers.Count(gu => gu.GroupId == id && gu.UserId == user.Id);
-
-
-            if (isMember == 0)
-            {
-                return NotFound();
-            }
+                .FirstOrDefault(g => g.Id == id && 
+                                     g.GroupsUsers
+                                         .Any(gu => gu.GroupId == g.Id &&
+                                                    gu.UserId == user.Id));
 
             return Ok(JsonResponse<Groups>.GenerateResponse(group));
         }
