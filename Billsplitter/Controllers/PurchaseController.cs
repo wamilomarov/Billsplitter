@@ -36,6 +36,7 @@ namespace Billsplitter.Controllers
                                 .Any(gu => gu.UserId == currentUserId &&
                                            gu.GroupId == p.GroupId))
                 .Include(p => p.Product)
+                .ThenInclude(i => i.Category)
                 .Include(p => p.PurchaseMembers)
                 .ThenInclude(p => p.User)
                 .OrderByDescending(p => p.CreatedAt);
