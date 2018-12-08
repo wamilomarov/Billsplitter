@@ -27,59 +27,6 @@
           "lib/netstandard1.3/CloudinaryDotNet.dll": {}
         }
       },
-      "Google.Apis/1.36.1": {
-        "type": "package",
-        "dependencies": {
-          "Google.Apis.Core": "1.36.1",
-          "Newtonsoft.Json": "10.0.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/Google.Apis.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Google.Apis.dll": {}
-        }
-      },
-      "Google.Apis.Auth/1.36.1": {
-        "type": "package",
-        "dependencies": {
-          "Google.Apis": "1.36.1",
-          "Google.Apis.Core": "1.36.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
-          "lib/netstandard2.0/Google.Apis.Auth.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
-          "lib/netstandard2.0/Google.Apis.Auth.dll": {}
-        }
-      },
-      "Google.Apis.Core/1.36.1": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "10.0.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/Google.Apis.Core.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Google.Apis.Core.dll": {}
-        }
-      },
-      "Google.Apis.Plus.v1/1.36.1.1410": {
-        "type": "package",
-        "dependencies": {
-          "Google.Apis": "1.36.1",
-          "Google.Apis.Auth": "1.36.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/Google.Apis.Plus.v1.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Google.Apis.Plus.v1.dll": {}
-        }
-      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -4495,7 +4442,7 @@
   },
   "libraries": {
     "AspNetCore.RouteAnalyzer/0.5.1": {
-      "sha512": "slxBURm28TfZPlVdpOLKTa9MrBVlMgxSb5aX8Sjko/vFVXm09UaS9VBYod0554vO4tzIOqhiUJQSabjTQ+4f6g==",
+      "sha512": "fMLX/jfiM/QViuZYKDOYQirZYYHoIrhGan+6PqPNI6OgTNv16rcFfvjqc7YEHZF+GHF006ZtDKCCXC/8BPx62A==",
       "type": "package",
       "path": "aspnetcore.routeanalyzer/0.5.1",
       "files": [
@@ -4508,7 +4455,7 @@
       ]
     },
     "CloudinaryDotNet/1.5.0": {
-      "sha512": "z8oEX/K3PHUpX67CVCdnll6NHIRfnkQEEQI+iIXhvsmLJqmgHZ/0w9UE6JfhrivXLi+Wq1/wLiK16IIpw47oGw==",
+      "sha512": "INoJjtb+cv0oaTbqyEoBbuNso3FCRgYC26f2Ps6h696c4QHHqN9PkkhUwQNIL84rL/aOXcw2AuvChfUjrwp4uQ==",
       "type": "package",
       "path": "cloudinarydotnet/1.5.0",
       "files": [
@@ -4522,96 +4469,6 @@
         "lib/netcore/CloudinaryDotNet.dll",
         "lib/netstandard1.3/CloudinaryDotNet.deps.json",
         "lib/netstandard1.3/CloudinaryDotNet.dll"
-      ]
-    },
-    "Google.Apis/1.36.1": {
-      "sha512": "t4wJDCilDNqvB1AlLf27+g9vyMib5aoowaoBOVpVjnQp+C2EDfdv07Eo9bSyqq1yzXhpGWiQUOzHfBWbTPQ6vw==",
-      "type": "package",
-      "path": "google.apis/1.36.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "google.apis.1.36.1.nupkg.sha512",
-        "google.apis.nuspec",
-        "lib/net45/Google.Apis.PlatformServices.dll",
-        "lib/net45/Google.Apis.dll",
-        "lib/net45/Google.Apis.pdb",
-        "lib/net45/Google.Apis.xml",
-        "lib/netstandard1.3/Google.Apis.dll",
-        "lib/netstandard1.3/Google.Apis.pdb",
-        "lib/netstandard1.3/Google.Apis.xml",
-        "lib/netstandard2.0/Google.Apis.dll",
-        "lib/netstandard2.0/Google.Apis.pdb",
-        "lib/netstandard2.0/Google.Apis.xml"
-      ]
-    },
-    "Google.Apis.Auth/1.36.1": {
-      "sha512": "oZU/4PdyFAVf1eVfOy4U+K3M0TIHl5HiOlj3bCIwgaXE2vZv/DbaPoxViVpDqbP+hfQuk8nb8hg08Wllar6oSw==",
-      "type": "package",
-      "path": "google.apis.auth/1.36.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "google.apis.auth.1.36.1.nupkg.sha512",
-        "google.apis.auth.nuspec",
-        "lib/net45/Google.Apis.Auth.PlatformServices.dll",
-        "lib/net45/Google.Apis.Auth.dll",
-        "lib/net45/Google.Apis.Auth.pdb",
-        "lib/net45/Google.Apis.Auth.xml",
-        "lib/netstandard1.3/Google.Apis.Auth.PlatformServices.dll",
-        "lib/netstandard1.3/Google.Apis.Auth.dll",
-        "lib/netstandard1.3/Google.Apis.Auth.pdb",
-        "lib/netstandard1.3/Google.Apis.Auth.xml",
-        "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll",
-        "lib/netstandard2.0/Google.Apis.Auth.dll",
-        "lib/netstandard2.0/Google.Apis.Auth.pdb",
-        "lib/netstandard2.0/Google.Apis.Auth.xml"
-      ]
-    },
-    "Google.Apis.Core/1.36.1": {
-      "sha512": "d1B/4A6W9d6uCZRUpcNGBTohLYs9cVgXASgCfszohE/4wByUhq9rf4/B+WfisYFdC6IUKR/5lYUXWtX/qONfQA==",
-      "type": "package",
-      "path": "google.apis.core/1.36.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "google.apis.core.1.36.1.nupkg.sha512",
-        "google.apis.core.nuspec",
-        "lib/net45/Google.Apis.Core.dll",
-        "lib/net45/Google.Apis.Core.pdb",
-        "lib/net45/Google.Apis.Core.xml",
-        "lib/netstandard1.3/Google.Apis.Core.dll",
-        "lib/netstandard1.3/Google.Apis.Core.pdb",
-        "lib/netstandard1.3/Google.Apis.Core.xml",
-        "lib/netstandard2.0/Google.Apis.Core.dll",
-        "lib/netstandard2.0/Google.Apis.Core.pdb",
-        "lib/netstandard2.0/Google.Apis.Core.xml"
-      ]
-    },
-    "Google.Apis.Plus.v1/1.36.1.1410": {
-      "sha512": "CE6ymVtXH03wc3z0FJDk+454ObVKSA1UnqzTC+T+yKwUNfPLEJ9Cv5TA6pLHVq6Rj/kCMO5ukG7mAK9SAN96rA==",
-      "type": "package",
-      "path": "google.apis.plus.v1/1.36.1.1410",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "google.apis.plus.v1.1.36.1.1410.nupkg.sha512",
-        "google.apis.plus.v1.nuspec",
-        "lib/net40/Google.Apis.Plus.v1.dll",
-        "lib/net40/Google.Apis.Plus.v1.pdb",
-        "lib/net40/Google.Apis.Plus.v1.xml",
-        "lib/net45/Google.Apis.Plus.v1.dll",
-        "lib/net45/Google.Apis.Plus.v1.pdb",
-        "lib/net45/Google.Apis.Plus.v1.xml",
-        "lib/netstandard1.0/Google.Apis.Plus.v1.dll",
-        "lib/netstandard1.0/Google.Apis.Plus.v1.pdb",
-        "lib/netstandard1.0/Google.Apis.Plus.v1.xml",
-        "lib/netstandard1.3/Google.Apis.Plus.v1.dll",
-        "lib/netstandard1.3/Google.Apis.Plus.v1.pdb",
-        "lib/netstandard1.3/Google.Apis.Plus.v1.xml",
-        "lib/netstandard2.0/Google.Apis.Plus.v1.dll",
-        "lib/netstandard2.0/Google.Apis.Plus.v1.pdb",
-        "lib/netstandard2.0/Google.Apis.Plus.v1.xml"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -12149,8 +12006,6 @@
     ".NETCoreApp,Version=v2.1": [
       "AspNetCore.RouteAnalyzer >= 0.5.1",
       "CloudinaryDotNet >= 1.5.0",
-      "Google.Apis.Auth >= 1.36.1",
-      "Google.Apis.Plus.v1 >= 1.36.1.1410",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.EntityFrameworkCore >= 2.1.4",
@@ -12211,14 +12066,6 @@
             "target": "Package",
             "version": "[1.5.0, )"
           },
-          "Google.Apis.Auth": {
-            "target": "Package",
-            "version": "[1.36.1, )"
-          },
-          "Google.Apis.Plus.v1": {
-            "target": "Package",
-            "version": "[1.36.1.1410, )"
-          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -12249,6 +12096,7 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

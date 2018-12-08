@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="C:\Users\shami\.Rider2018.2\config\extensions" t="IncludeRecursive" />
     <e p="C:\Users\shami\.Rider2018.2\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\shami\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Billsplitter.516047422.00" t="ExcludeRecursive" />
     <e p="D:\Work\Web Development\Billsplitter" t="IncludeFlat">

@@ -16,7 +16,6 @@ namespace Billsplitter.Models
         [Required]
         public int CategoryId { get; set; }
         public IFormFile Photo { get; set; }
-        [Required]
         public string BarCode { get; set; }
         [Required]
         public int AddedByUserId { get; set; }
@@ -25,6 +24,8 @@ namespace Billsplitter.Models
         public DateTime CreatedAt { get; set; }
         [Required]
         public IEnumerable<int> Shares { get; set; }
+        
+        public bool IsComplete { get; set; }
 
     }
 }

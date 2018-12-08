@@ -6,11 +6,7 @@ namespace Billsplitter.Entities
 {
     public partial class PurchaseMembers
     {
-        public int Id
-        {
-            get ;
-            set;
-        }
+        public int Id { get; set; }
 
         [IgnoreDataMember]
         public int PurchaseId { get; set; }
