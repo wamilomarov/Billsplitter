@@ -275,5 +275,18 @@ namespace Billsplitter.Controllers
             return Ok(JsonResponse<Users>.GenerateResponse(user));
 
         }
+        
+        [HttpGet("me"), Authorize]
+        public IActionResult Get()
+        {
+            var currentUser = HttpContext.User;
+
+            var currentUserId = int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            
+            var user = _context.Users.Find(currentUserId);
+
+            return Ok(JsonResponse<Users>.GenerateResponse(user));
+
+        }
     }
 }

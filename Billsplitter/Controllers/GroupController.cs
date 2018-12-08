@@ -130,7 +130,8 @@ namespace Billsplitter.Controllers
 
             if (group == null)
             {
-                return NotFound();
+                ModelState.AddModelError("Group", "Group can be modified by owner only.");
+                return BadRequest(ModelState);
             }
 
             if (request.Photo != null)
@@ -242,11 +243,6 @@ namespace Billsplitter.Controllers
         [HttpDelete("{id}"), Authorize]
         public IActionResult Delete(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var currentUser = HttpContext.User;
 
             Users user = _context.Users
@@ -263,7 +259,8 @@ namespace Billsplitter.Controllers
 
             if (group == null)
             {
-                return NotFound();
+                ModelState.AddModelError("Group", "Group can be deleted by owner only.");
+                return BadRequest(ModelState);
             }
 
             _context.Groups.Remove(group);
