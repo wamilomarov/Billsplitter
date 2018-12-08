@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Models
@@ -7,8 +6,10 @@ namespace Billsplitter.Models
     {
         public static JObject GenerateResponse(T data)
         {
-            var result = new JObject();
-            result["data"] = JToken.FromObject(data);
+            var result = 
+                data == null ? 
+                new JObject {["data"] = null} : 
+                new JObject {["data"] = JToken.FromObject(data)};
             return result;
         }
     }

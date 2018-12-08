@@ -18,6 +18,7 @@ namespace Billsplitter.Entities
         public int GroupId { get; set; }
         [IgnoreDataMember]
         public string PhotoUrl { get; set; }
+        [IgnoreDataMember]
         public int CategoryId { get; set; }
         public string BarCode { get; set; }
         [IgnoreDataMember]
@@ -28,7 +29,7 @@ namespace Billsplitter.Entities
 
         [IgnoreDataMember]
         public Users AddedByUser { get; set; }
-        [IgnoreDataMember]
+
         public ProductCategories Category { get; set; }
         [IgnoreDataMember]
         public Groups Group { get; set; }
@@ -40,5 +41,6 @@ namespace Billsplitter.Entities
         public ICollection<Purchases> Purchases { get; set; }
         [IgnoreDataMember]
         public ICollection<RepeatingPurchases> RepeatingPurchases { get; set; }
+       
     }
 }

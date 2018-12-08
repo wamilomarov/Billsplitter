@@ -28,4 +28,12 @@ namespace Billsplitter.Models
         public bool IsComplete { get; set; }
 
     }
+
+    public class SearchProduct
+    {
+        [Required, MaxLength(255)]
+        public string BarCode { get; set; }
+        [Required]
+        public int GroupId { get; set; }
+    }
 }

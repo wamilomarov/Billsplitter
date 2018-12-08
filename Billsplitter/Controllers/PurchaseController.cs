@@ -26,7 +26,15 @@ namespace Billsplitter.Controllers
         [HttpGet("{groupId}"), Authorize]
         public IActionResult Get(int groupId, [FromQuery]int page = 1)
         {
-            var purchases = _context.Purchases.Where(p => p.GroupId == groupId)
+            var currentUser = HttpContext.User;
+            
+            var currentUserId = int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+
+            var purchases = _context.Purchases
+                .Where(p => p.GroupId == groupId &&
+                            p.Group.GroupsUsers
+                                .Any(gu => gu.UserId == currentUserId &&
+                                           gu.GroupId == p.GroupId))
                 .Include(p => p.Product)
                 .Include(p => p.PurchaseMembers)
                 .ThenInclude(p => p.User)
