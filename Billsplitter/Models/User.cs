@@ -15,7 +15,7 @@ namespace Billsplitter.Models
     public class User
     {
         private readonly IConfiguration _config;
-        
+
         public User(IConfiguration config)
         {
             _config = config;
@@ -30,22 +30,21 @@ namespace Billsplitter.Models
             Photo = userData.Photo;
             CreatedAt = userData.CreatedAt;
         }
-        
+
         public int Id { get; set; }
-        [DataMember(Name = "name")]
-        public string FullName { get; set; }
-        [DataMember(Name = "email")]
-        public string Email { get; set; }
-        [DataMember(Name = "picture")]
-        public string Photo { get; set; }
+        [DataMember(Name = "name")] public string FullName { get; set; }
+        [DataMember(Name = "email")] public string Email { get; set; }
+        [DataMember(Name = "picture")] public string Photo { get; set; }
         public string EmailVerificationCode { get; set; }
         public string ApiToken { get; set; }
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime CreatedAt { get; set; }
 
         public void GenerateToken()
         {
-            var claims = new[] {
+            var claims = new[]
+            {
                 new Claim(JwtRegisteredClaimNames.Sid, this.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, this.FullName),
                 new Claim(JwtRegisteredClaimNames.Email, this.Email),
@@ -63,29 +62,30 @@ namespace Billsplitter.Models
                 signingCredentials: creds);
 
             ApiToken = new JwtSecurityTokenHandler().WriteToken(token);
-            
         }
-      
     }
 
     public class UserLoginModel
     {
-        [Required,EmailAddress, MaxLength(255), MinLength(5)]
-        public string Email  { get; set; }
+        [Required, EmailAddress, MaxLength(255), MinLength(5)]
+        public string Email { get; set; }
+
         [Required, MinLength(6), MaxLength(255)]
         public string Password { get; set; }
     }
 
     public class UserRegisterModel
     {
-        [Required, MaxLength(255)]
-        public string FullName { get; set; }
+        [Required, MaxLength(255)] public string FullName { get; set; }
+
         [Required, EmailAddress, MaxLength(255)]
         public string Email { get; set; }
+
         public IFormFile Photo { get; set; }
+
         [Required, MinLength(6), MaxLength(255)]
         public string Password { get; set; }
-        
+
         public string GenerateEmailVerificationCode()
         {
             Random random = new Random();
@@ -93,6 +93,18 @@ namespace Billsplitter.Models
             return new string(Enumerable.Repeat(chars, 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        
+    }
+
+    public class UserUpdateModel
+    {
+        [MaxLength(255)] 
+        public string FullName { get; set; }
+        [EmailAddress, MaxLength(255)] 
+        public string Email { get; set; }
+        public IFormFile Photo { get; set; }
+        [MinLength(6), MaxLength(255)] 
+        public string Password { get; set; }
+        [MinLength(6), MaxLength(255)] 
+        public string OldPassword { get; set; }
     }
 }

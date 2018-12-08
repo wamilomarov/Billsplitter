@@ -1,4 +1,5 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using Billsplitter.Entities;
 using Billsplitter.Models;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -204,6 +206,74 @@ namespace Billsplitter.Controllers
             user.GenerateToken();
 
             return Ok(JsonResponse<User>.GenerateResponse(user));
+        }
+
+        [HttpPut("me"), Authorize]
+        public IActionResult Put(UserUpdateModel userUpdate)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var currentUser = HttpContext.User;
+
+            var currentUserId = currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
+            
+            var user = _context.Users.Find(int.Parse(currentUserId));
+
+            if (!string.IsNullOrEmpty(userUpdate.Email))
+            {
+                var emailExists = _context.Users.Count(u => u.Email == userUpdate.Email && u.Id != user.Id);
+                if (emailExists > 0)
+                {
+                    ModelState.AddModelError("Email", "This email is already taken.");
+                    return BadRequest(ModelState);
+                }
+                
+                user.Email = userUpdate.Email.ToLower();
+            }
+
+            if (!string.IsNullOrEmpty(userUpdate.FullName))
+            {
+                user.FullName = userUpdate.FullName;
+            }
+
+            if (userUpdate.Photo != null)
+            {
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(userUpdate.Photo.FileName, userUpdate.Photo.OpenReadStream()),
+                };
+                var uploadResult = cloudinary.Upload(uploadParams);
+
+                if (uploadResult.Error != null)
+                {
+                    ModelState.AddModelError("Photo", uploadResult.Error.Message);
+                    return BadRequest(ModelState);
+                }
+
+                user.PhotoUrl = uploadResult.PublicId;
+            }
+
+            if (!string.IsNullOrEmpty(userUpdate.Password) && !string.IsNullOrWhiteSpace(userUpdate.OldPassword))
+            {
+                PasswordVerificationResult passwordCheck = new PasswordHasher<UserUpdateModel>()
+                    .VerifyHashedPassword(userUpdate, user.Password, userUpdate.Password);
+
+                if (passwordCheck == PasswordVerificationResult.Failed)
+                {
+                    ModelState.AddModelError("OldPassword", "Ypu typed wrong Old Password, please try again with correct one.");
+                    return BadRequest(ModelState);
+                }
+                user.Password = new PasswordHasher<UserUpdateModel>().HashPassword(userUpdate, userUpdate.Password);
+            }
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return Ok(JsonResponse<Users>.GenerateResponse(user));
+
         }
     }
 }
