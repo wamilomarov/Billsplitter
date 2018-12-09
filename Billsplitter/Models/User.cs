@@ -35,6 +35,7 @@ namespace Billsplitter.Models
         [DataMember(Name = "name")] public string FullName { get; set; }
         [DataMember(Name = "email")] public string Email { get; set; }
         [DataMember(Name = "picture")] public string Photo { get; set; }
+        [IgnoreDataMember]
         public string EmailVerificationCode { get; set; }
         public string ApiToken { get; set; }
 

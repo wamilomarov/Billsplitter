@@ -1,4 +1,5 @@
 ﻿using System;
+using Billsplitter.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -27,6 +28,7 @@ namespace Billsplitter.Entities
         public virtual DbSet<Purchases> Purchases { get; set; }
         public virtual DbSet<RepeatingPurchases> RepeatingPurchases { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public DbQuery<ProductStatistics> ProductStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -52,7 +52,7 @@ namespace Billsplitter.Controllers
 
             if (group == null)
             {
-                ModelState.AddModelError("groupId", "You can not add any record to this group.");
+                ModelState.AddModelError("Group", "You can not add any record to this group.");
                 return BadRequest(ModelState);
             }
             
@@ -108,7 +108,8 @@ namespace Billsplitter.Controllers
                 GroupId = addedProduct.GroupId,
                 PaidByUserId = addedProduct.AddedByUserId,
                 Price = decimal.Parse(HttpContext.Request.Form["price"]),
-                IsComplete = false
+                IsComplete = false,
+                CreatedAt = product.CreatedAt
             };
 
             _context.Purchases.Add(purchase);

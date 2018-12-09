@@ -36,4 +36,12 @@ namespace Billsplitter.Models
         [Required]
         public int GroupId { get; set; }
     }
+
+    public class ProductStatistics
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal AmountSpent { get; set; }
+        public string Color { get; set; }
+    }
 }
