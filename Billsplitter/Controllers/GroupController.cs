@@ -103,7 +103,7 @@ namespace Billsplitter.Controllers
             _context.SaveChanges();
 
 
-            return Ok();
+            return Ok(new object());
         }
 
         [HttpPut("{id}"), Authorize]
@@ -228,7 +228,9 @@ namespace Billsplitter.Controllers
                 .Include(i => i.Currency)
                 .Include(i => i.GroupsUsers)
                 .ThenInclude(i => i.User)
-                .Where(g => g.GroupsUsers.Any(gu => gu.UserId == user.Id));
+                .Where(g => g.GroupsUsers.
+                    Any(gu => gu.GroupId == g.Id && 
+                              gu.UserId == user.Id));
 
             var paginator = new Pagination<Groups>(groups, page, 20);
 
@@ -260,7 +262,7 @@ namespace Billsplitter.Controllers
 
             _context.Groups.Remove(group);
 
-            return Ok();
+            return Ok(new object());
         }
     }
 }

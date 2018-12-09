@@ -42,11 +42,13 @@ namespace Billsplitter.Controllers
 
             var currentUser = HttpContext.User;
 
-            var creatorId = currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value;
+            var creatorId = int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
 
             var group = _context.Groups
-                .FirstOrDefault(g => g.GroupsUsers
-                    .Any(gu => gu.Id == product.GroupId && gu.UserId == int.Parse(creatorId)));
+                .FirstOrDefault(g => g.Id == product.GroupId &&
+                                     g.GroupsUsers
+                                         .Any(gu => gu.GroupId == g.Id && 
+                                                    gu.UserId == creatorId));
 
             if (group == null)
             {
@@ -76,7 +78,7 @@ namespace Billsplitter.Controllers
                     BarCode = product.BarCode,
                     CategoryId = product.CategoryId,
                     GroupId = product.GroupId,
-                    AddedByUserId = int.Parse(creatorId),
+                    AddedByUserId = creatorId,
                     MeasureId = 1
                 };
 
@@ -124,7 +126,7 @@ namespace Billsplitter.Controllers
 
             _context.SaveChanges();
 
-            return Ok();
+            return Ok(new object());
         }
 
         [HttpPut("{id}"), Authorize]
