@@ -13,7 +13,7 @@ namespace Billsplitter.Models
         public string Name { get; set; }
         [Required]
         public int GroupId { get; set; }
-        public int PaidById { get; set; }
+        public int? PaidById { get; set; }
         [Required]
         public int CategoryId { get; set; }
         public IFormFile Photo { get; set; }

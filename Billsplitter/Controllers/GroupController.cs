@@ -257,6 +257,7 @@ namespace Billsplitter.Controllers
             }
 
             _context.Groups.Remove(group);
+            _context.SaveChanges();
 
             return Ok(new object());
         }

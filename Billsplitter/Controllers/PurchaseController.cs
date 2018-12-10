@@ -39,6 +39,7 @@ namespace Billsplitter.Controllers
                 .ThenInclude(i => i.Category)
                 .Include(p => p.PurchaseMembers)
                 .ThenInclude(p => p.User)
+                .Include(i => i.PaidByUser)
                 .OrderByDescending(p => p.Date);
 
 

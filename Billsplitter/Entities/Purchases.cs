@@ -16,7 +16,7 @@ namespace Billsplitter.Entities
         [IgnoreDataMember]
         public int GroupId { get; set; }
         [IgnoreDataMember]
-        public int PaidByUserId { get; set; }
+        public int? PaidByUserId { get; set; }
 //        public string Title { get; set; }
 //        public string Comment { get; set; }
         public bool IsComplete { get; set; }
@@ -30,8 +30,9 @@ namespace Billsplitter.Entities
 
         [IgnoreDataMember]
         public Groups Group { get; set; }
-        [IgnoreDataMember]
+        
         public Users PaidByUser { get; set; }
+        
         public Products Product { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Date { get; set; }
