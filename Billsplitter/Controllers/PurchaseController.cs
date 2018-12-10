@@ -39,7 +39,7 @@ namespace Billsplitter.Controllers
                 .ThenInclude(i => i.Category)
                 .Include(p => p.PurchaseMembers)
                 .ThenInclude(p => p.User)
-                .OrderByDescending(p => p.CreatedAt);
+                .OrderByDescending(p => p.Date);
 
 
             var paginator = new Pagination<Purchases>(purchases, page, 10);

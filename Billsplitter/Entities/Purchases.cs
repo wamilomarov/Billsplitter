@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace Billsplitter.Entities
@@ -32,6 +33,8 @@ namespace Billsplitter.Entities
         [IgnoreDataMember]
         public Users PaidByUser { get; set; }
         public Products Product { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? Date { get; set; }
         public ICollection<PurchaseMembers> PurchaseMembers { get; set; }
     }
 }

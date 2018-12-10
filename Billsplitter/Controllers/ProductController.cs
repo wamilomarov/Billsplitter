@@ -24,7 +24,7 @@ namespace Billsplitter.Controllers
             _config = config;
         }
 
-        [HttpGet("categories"), Authorize]
+        [HttpGet("categories")]
         public IActionResult Categories([FromQuery] int page = 1)
         {
             var categories = _context.ProductCategories;
@@ -56,9 +56,7 @@ namespace Billsplitter.Controllers
                 return BadRequest(ModelState);
             }
             
-            Products addedProduct = null;
-
-            Products existingProduct = null;
+            Products addedProduct = null, existingProduct = null;
 
             if (product.BarCode != null)
             {
@@ -106,10 +104,11 @@ namespace Billsplitter.Controllers
             {
                 ProductId = addedProduct.Id,
                 GroupId = addedProduct.GroupId,
-                PaidByUserId = addedProduct.AddedByUserId,
+                PaidByUserId = product.PaidById,
                 Price = decimal.Parse(HttpContext.Request.Form["price"]),
                 IsComplete = false,
-                CreatedAt = product.CreatedAt
+                CreatedAt = product.CreatedAt,
+                Date = product.Date
             };
 
             _context.Purchases.Add(purchase);
@@ -171,6 +170,8 @@ namespace Billsplitter.Controllers
 
             purchase.Price = decimal.Parse(HttpContext.Request.Form["price"]);
             purchase.IsComplete = productEdit.IsComplete;
+            purchase.PaidByUserId = productEdit.PaidById;
+            purchase.Date = productEdit.Date;
 
             _context.Purchases.Update(purchase);
 

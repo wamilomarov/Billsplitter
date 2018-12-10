@@ -13,17 +13,18 @@ namespace Billsplitter.Models
         public string Name { get; set; }
         [Required]
         public int GroupId { get; set; }
+        public int PaidById { get; set; }
         [Required]
         public int CategoryId { get; set; }
         public IFormFile Photo { get; set; }
         public string BarCode { get; set; }
-        [Required]
         public int AddedByUserId { get; set; }
-        [Required]
         public int MeasureId { get; set; }
         public DateTime CreatedAt { get; set; }
         [Required]
         public IEnumerable<int> Shares { get; set; }
+        [Required, DataType(DataType.Date)]
+        public DateTime? Date { get; set; }
         
         public bool IsComplete { get; set; }
 

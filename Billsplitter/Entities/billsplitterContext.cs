@@ -321,6 +321,9 @@ namespace Billsplitter.Entities
                 entity.Property(e => e.Show)
                     .HasColumnType("boolean")
                     .HasDefaultValueSql("1");
+                
+                entity.Property(e => e.Date)
+                    .HasColumnType("date");
 
                 entity.Property(e => e.PaidByUserId).HasColumnType("int(11)");
 
