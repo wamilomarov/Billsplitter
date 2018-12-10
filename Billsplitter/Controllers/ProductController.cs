@@ -60,7 +60,8 @@ namespace Billsplitter.Controllers
 
             if (product.BarCode != null)
             {
-                existingProduct = _context.Products.FirstOrDefault(p => p.BarCode == product.BarCode);
+                existingProduct = _context.Products.FirstOrDefault(p => p.BarCode == product.BarCode && 
+                                                                        p.GroupId == group.Id);
             }
 
             if (existingProduct != null)

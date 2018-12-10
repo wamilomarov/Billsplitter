@@ -77,5 +77,42 @@ namespace Billsplitter.Controllers
             return Ok(JsonResponse<List<ProductStatistics>>.GenerateResponse(productStatistics));
 
         }
+
+        [HttpPost("{id}/hide_completed"), Authorize]
+        public IActionResult HideCompleted(int id)
+        {
+            var currentUser = HttpContext.User;
+
+            var currentUserId = int.Parse(currentUser.Claims
+                .FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+
+
+            Groups group = _context.Groups
+                .Include(i => i.Currency)
+                .Include(i => i.GroupsUsers)
+                .ThenInclude(i => i.User)
+                .Where(g => g.GroupsUsers
+                    .Any(gu => gu.GroupId == id &&
+                               gu.UserId == currentUserId))
+                .FirstOrDefault(g => g.Id == id);
+
+            if (group == null)
+            {
+                ModelState.AddModelError("Group", "You can not edit this group data.");
+                return BadRequest(ModelState);
+            }
+
+            _context.Purchases
+                .Where(p => p.GroupId == group.Id && 
+                            p.IsComplete == true &&
+                            p.Show == true)
+                .ToList()
+                .ForEach(i => i.Show = false);
+
+            _context.SaveChanges();
+
+            return Ok(new object());
+        }
+        
     }
 }
