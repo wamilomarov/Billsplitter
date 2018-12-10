@@ -42,12 +42,13 @@ namespace Billsplitter.Controllers
 
             var currentUser = HttpContext.User;
 
-            var creatorId = int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            var creatorId =
+                int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
 
             var group = _context.Groups
                 .FirstOrDefault(g => g.Id == product.GroupId &&
                                      g.GroupsUsers
-                                         .Any(gu => gu.GroupId == g.Id && 
+                                         .Any(gu => gu.GroupId == g.Id &&
                                                     gu.UserId == creatorId));
 
             if (group == null)
@@ -55,12 +56,12 @@ namespace Billsplitter.Controllers
                 ModelState.AddModelError("Group", "You can not add any record to this group.");
                 return BadRequest(ModelState);
             }
-            
+
             Products addedProduct = null, existingProduct = null;
 
             if (product.BarCode != null)
             {
-                existingProduct = _context.Products.FirstOrDefault(p => p.BarCode == product.BarCode && 
+                existingProduct = _context.Products.FirstOrDefault(p => p.BarCode == product.BarCode &&
                                                                         p.GroupId == group.Id);
             }
 
@@ -114,15 +115,18 @@ namespace Billsplitter.Controllers
 
             _context.Purchases.Add(purchase);
 
-            foreach (var share in product.Shares)
+            if (product.Shares != null)
             {
-                var purchaseMember = new PurchaseMembers()
+                foreach (var share in product.Shares)
                 {
-                    PurchaseId = purchase.Id,
-                    UserId = share,
-                    IsPaid = false
-                };
-                _context.PurchaseMembers.Add(purchaseMember);
+                    var purchaseMember = new PurchaseMembers()
+                    {
+                        PurchaseId = purchase.Id,
+                        UserId = share,
+                        IsPaid = false
+                    };
+                    _context.PurchaseMembers.Add(purchaseMember);
+                }
             }
 
             _context.SaveChanges();
@@ -137,7 +141,7 @@ namespace Billsplitter.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             var currentUser = HttpContext.User;
 
             var currentUserId = currentUser.Claims
@@ -147,7 +151,7 @@ namespace Billsplitter.Controllers
             var purchase = _context.Purchases
                 .Include(i => i.PurchaseMembers)
                 .ThenInclude(i => i.User)
-                .FirstOrDefault(p => p.Id == id && 
+                .FirstOrDefault(p => p.Id == id &&
                                      p.Group.GroupsUsers
                                          .Any(gu => gu.UserId == int.Parse(currentUserId) &&
                                                     gu.GroupId == productEdit.GroupId));
@@ -182,16 +186,23 @@ namespace Billsplitter.Controllers
                 _context.PurchaseMembers.Remove(currentShare);
             }
 
-            foreach (var share in productEdit.Shares)
+            if (productEdit.Shares != null)
             {
-                var purchaseMember = new PurchaseMembers()
+                _context.PurchaseMembers
+                    .RemoveRange(_context.PurchaseMembers
+                        .Where(pm => pm.PurchaseId == purchase.Id));
+                foreach (var share in productEdit.Shares)
                 {
-                    PurchaseId = purchase.Id,
-                    UserId = share,
-                    IsPaid = false
-                };
-                _context.PurchaseMembers.Add(purchaseMember);
+                    var purchaseMember = new PurchaseMembers()
+                    {
+                        PurchaseId = purchase.Id,
+                        UserId = share,
+                        IsPaid = false
+                    };
+                    _context.PurchaseMembers.Add(purchaseMember);
+                }
             }
+
 
             _context.SaveChanges();
 
@@ -207,18 +218,19 @@ namespace Billsplitter.Controllers
             }
 
             var currentUser = HttpContext.User;
-            
-            var currentUserId = int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
-            
+
+            var currentUserId =
+                int.Parse(currentUser.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+
             var product = _context.Products
                 .Include(i => i.Category)
-                .FirstOrDefault(p => p.BarCode == searchProduct.BarCode 
+                .FirstOrDefault(p => p.BarCode == searchProduct.BarCode
                                      && p.GroupId == searchProduct.GroupId
                                      && p.Group.GroupsUsers
                                          .Any(gu => gu.GroupId == searchProduct.GroupId &&
                                                     gu.UserId == currentUserId));
 
-            
+
             return Ok(JsonResponse<Products>.GenerateResponse(product));
         }
     }

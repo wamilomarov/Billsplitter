@@ -21,7 +21,6 @@ namespace Billsplitter.Models
         public int AddedByUserId { get; set; }
         public int MeasureId { get; set; }
         public DateTime CreatedAt { get; set; }
-        [Required]
         public IEnumerable<int> Shares { get; set; }
         [Required, DataType(DataType.Date)]
         public DateTime? Date { get; set; }
