@@ -182,7 +182,6 @@ namespace Billsplitter.Controllers
 
             _context.Purchases.Update(purchase);
 
-
             if (productEdit.Shares != null)
             {
                 var currentShares = _context.PurchaseMembers.Where(pm => pm.PurchaseId == purchase.Id).ToList();
@@ -203,7 +202,6 @@ namespace Billsplitter.Controllers
                 }
             }
             
-
             _context.SaveChanges();
 
             return Ok(JsonResponse<Purchases>.GenerateResponse(purchase));
@@ -228,9 +226,19 @@ namespace Billsplitter.Controllers
                                      && p.Group.GroupsUsers
                                          .Any(gu => gu.GroupId == searchProduct.GroupId &&
                                                     gu.UserId == currentUserId));
+            
+            var purchase = _context.Purchases
+                .Where(p => p.ProductId == product.Id)
+                .Include(p => p.Product)
+                .ThenInclude(i => i.Category)
+                .Include(p => p.PurchaseMembers)
+                .ThenInclude(p => p.User)
+                .Include(i => i.PaidByUser)
+                .OrderByDescending(p => p.Date)
+                .FirstOrDefault();
 
             
-            return Ok(JsonResponse<Products>.GenerateResponse(product));
+            return Ok(JsonResponse<Purchases>.GenerateResponse(purchase));
         }
     }
 }
