@@ -62,17 +62,11 @@ namespace Billsplitter.Controllers
 
             _context.Groups.Add(group);
             _context.SaveChanges();
+            
+            var members = new HashSet<string>(request.Members);
+            members.Add(user.Email);
 
-            var groupAdmin = new GroupsUsers()
-            {
-                UserId = user.Id,
-                GroupId = group.Id
-            };
-
-            _context.GroupsUsers.Add(groupAdmin);
-            _context.SaveChanges();
-
-            foreach (var member in request.Members)
+            foreach (var member in members)
             {
                 var memberData = _context.Users.FirstOrDefault(u => u.Email == member);
                 GroupsUsers groupUser = new GroupsUsers()
@@ -90,7 +84,7 @@ namespace Billsplitter.Controllers
                     _context.Users.Add(newUser);
                     _context.SaveChanges();
                     groupUser.UserId = newUser.Id;
-                    //send email
+                    //send email if not admin
                 }
                 else
                 {
@@ -153,8 +147,11 @@ namespace Billsplitter.Controllers
             {
                 _context.GroupsUsers.Remove(currentMember);
             }
+            
+            var members = new HashSet<string>(request.Members);
+            members.Add(user.Email);
 
-            foreach (var newMember in request.Members)
+            foreach (var newMember in members)
             {
                 var memberData = _context.Users.FirstOrDefault(u => u.Email == newMember);
                 GroupsUsers groupUser = new GroupsUsers()
@@ -172,7 +169,6 @@ namespace Billsplitter.Controllers
                     _context.Users.Add(newUser);
                     _context.SaveChanges();
                     groupUser.UserId = newUser.Id;
-                    //send email
                 }
                 else
                 {
