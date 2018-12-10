@@ -7,6 +7,7 @@ using AspNetCore.RouteAnalyzer;
 using Billsplitter.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -61,6 +62,20 @@ namespace Billsplitter
             
             
             services.AddRouteAnalyzer();
+            
+            // ********************
+            // Setup CORS
+            // ********************
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.AllowAnyOrigin(); // For anyone access.
+            corsBuilder.AllowCredentials();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SiteCorsPolicy", corsBuilder.Build());
+            });
 
         }
 
@@ -74,6 +89,7 @@ namespace Billsplitter
                     .AllowCredentials()
                     .AllowAnyMethod();
             });
+            app.UseCors("AllowAll");
             
             if (env.IsDevelopment())
             {
@@ -97,7 +113,8 @@ namespace Billsplitter
                 routes.MapRouteAnalyzer("/routes");
             });
 
-            
+            app.UseCors("SiteCorsPolicy");
+
         }
     }
 }
