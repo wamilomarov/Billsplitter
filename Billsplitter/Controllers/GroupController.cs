@@ -183,8 +183,15 @@ namespace Billsplitter.Controllers
             }
 
             _context.SaveChanges();
+            
+            var resultGroup = _context.Groups
+                .Include(i => i.Currency)
+                .Include(i => i.GroupsUsers)
+                .ThenInclude(i => i.User)
+                .Where(g => g.CreatedByUserId == user.Id)
+                .FirstOrDefault(g => g.Id == id);
 
-            return Ok(JsonResponse<Groups>.GenerateResponse(group));
+            return Ok(JsonResponse<Groups>.GenerateResponse(resultGroup));
         }
 
         [HttpGet("{id}"), Authorize]

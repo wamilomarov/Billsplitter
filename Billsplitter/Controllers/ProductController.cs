@@ -130,7 +130,15 @@ namespace Billsplitter.Controllers
 
             _context.SaveChanges();
 
-            return Ok(new object());
+            var resultPurchase = _context.Purchases
+                .Include(p => p.Product)
+                .ThenInclude(i => i.Category)
+                .Include(p => p.PurchaseMembers)
+                .ThenInclude(p => p.User)
+                .Include(i => i.PaidByUser)
+                .FirstOrDefault(p => p.Id == purchase.Id);
+
+            return Ok(JsonResponse<Purchases>.GenerateResponse(resultPurchase));
         }
 
         [HttpPut("{id}"), Authorize]
@@ -203,8 +211,16 @@ namespace Billsplitter.Controllers
             }
             
             _context.SaveChanges();
+            
+            var resultPurchase = _context.Purchases
+                .Include(p => p.Product)
+                .ThenInclude(i => i.Category)
+                .Include(p => p.PurchaseMembers)
+                .ThenInclude(p => p.User)
+                .Include(i => i.PaidByUser)
+                .FirstOrDefault(p => p.Id == id);
 
-            return Ok(JsonResponse<Purchases>.GenerateResponse(purchase));
+            return Ok(JsonResponse<Purchases>.GenerateResponse(resultPurchase));
         }
 
         [HttpGet, Authorize]
