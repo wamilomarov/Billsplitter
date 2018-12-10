@@ -148,8 +148,11 @@ namespace Billsplitter.Controllers
 
 
             var purchase = _context.Purchases
-                .Include(i => i.PurchaseMembers)
-                .ThenInclude(i => i.User)
+                .Include(p => p.Product)
+                .ThenInclude(i => i.Category)
+                .Include(p => p.PurchaseMembers)
+                .ThenInclude(p => p.User)
+                .Include(i => i.PaidByUser)
                 .FirstOrDefault(p => p.Id == id && 
                                      p.Group.GroupsUsers
                                          .Any(gu => gu.UserId == int.Parse(currentUserId) &&
