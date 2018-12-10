@@ -203,7 +203,7 @@ namespace Billsplitter.Controllers
 
             _context.SaveChanges();
 
-            return Ok(purchase);
+            return Ok(JsonResponse<Purchases>.GenerateResponse(purchase));
         }
 
         [HttpGet, Authorize]
