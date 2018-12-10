@@ -56,17 +56,23 @@ namespace Billsplitter.Controllers
                 return BadRequest(ModelState);
             }
 
-            var uploadParams = new ImageUploadParams()
+            UploadResult uploadResult = null;
+            if (registerModel.Photo != null)
             {
-                File = new FileDescription(registerModel.Photo.FileName, registerModel.Photo.OpenReadStream()),
-            };
-            var uploadResult = cloudinary.Upload(uploadParams);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(registerModel.Photo.FileName, registerModel.Photo.OpenReadStream()),
+                };
+                uploadResult = cloudinary.Upload(uploadParams);
 
-            if (uploadResult.Error != null)
-            {
-                ModelState.AddModelError("Photo", uploadResult.Error.Message);
-                return BadRequest(ModelState);
+                if (uploadResult.Error != null)
+                {
+                    ModelState.AddModelError("Photo", uploadResult.Error.Message);
+                    return BadRequest(ModelState);
+                }
             }
+
+           
 
             string emailVerificationCode = registerModel.GenerateEmailVerificationCode();
 
@@ -79,7 +85,7 @@ namespace Billsplitter.Controllers
                 userData.Password =
                     new PasswordHasher<UserRegisterModel>().HashPassword(registerModel, registerModel.Password);
                 userData.EmailVerificationCode = emailVerificationCode;
-                userData.PhotoUrl = uploadResult.PublicId;
+                userData.PhotoUrl = uploadResult?.PublicId;
 
                 _context.Users.Update(userData);
             }
@@ -89,7 +95,7 @@ namespace Billsplitter.Controllers
                 {
                     FullName = registerModel.FullName,
                     Email = registerModel.Email,
-                    PhotoUrl = uploadResult.PublicId,
+                    PhotoUrl = uploadResult?.PublicId,
                     Password = new PasswordHasher<UserRegisterModel>().HashPassword(registerModel,
                         registerModel.Password),
                     EmailVerificationCode = emailVerificationCode
