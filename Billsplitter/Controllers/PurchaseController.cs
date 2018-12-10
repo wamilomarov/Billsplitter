@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Billsplitter.Entities;
@@ -71,10 +72,13 @@ namespace Billsplitter.Controllers
             LEFT JOIN products prd ON prd.Id = prc.ProductId
             LEFT JOIN product_categories pc ON pc.Id = prd.CategoryId
             LEFT JOIN purchase_members pm ON pm.PurchaseId = prc.Id
-            WHERE prc.GroupId = 2 AND pm.UserId = 2
+            WHERE prc.GroupId = @groupId AND pm.UserId = @userId
             GROUP BY prd.CategoryId";
             var productStatistics = _context.ProductStatistics.FromSql(query).ToList();
 
+            var parameterS = new SqlParameter("@groupId", group.Id);
+            var parameterD = new SqlParameter("@userId", currentUserId);
+            
             return Ok(JsonResponse<List<ProductStatistics>>.GenerateResponse(productStatistics));
 
         }
