@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace Billsplitter.Controllers
 {
@@ -76,8 +77,8 @@ namespace Billsplitter.Controllers
             GROUP BY prd.CategoryId";
             
 
-            var groupId = new SqlParameter("@groupId", group.Id);
-            var userId = new SqlParameter("@userId", currentUserId);
+            var groupId = new MySqlParameter("@groupId", group.Id);
+            var userId = new MySqlParameter("@userId", currentUserId);
             
             var productStatistics = _context.ProductStatistics.FromSql(query, groupId, userId).ToList();
             

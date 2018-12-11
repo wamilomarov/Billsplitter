@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SendGrid;
 
 namespace Billsplitter.Controllers
 {
@@ -110,7 +111,7 @@ namespace Billsplitter.Controllers
                 .Where(g => g.CreatedByUserId == user.Id)
                 .FirstOrDefault(g => g.Id == group.Id);
 
-            return Ok(resultGroup);
+            return Ok(JsonResponse<Groups>.GenerateResponse(resultGroup));
         }
 
         [HttpPut("{id}"), Authorize]
@@ -290,5 +291,19 @@ namespace Billsplitter.Controllers
 
             return Ok(new object());
         }
+
+//        [HttpGet("mail")]
+//        public IActionResult()
+//        {
+//            var apiKey = Environment.GetEnvironmentVariable("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");
+//            var client = new SendGridClient(apiKey);
+//            var from = new EmailAddress("test@example.com", "Example User");
+//            var subject = "Sending with SendGrid is Fun";
+//            var to = new EmailAddress("test@example.com", "Example User");
+//            var plainTextContent = "and easy to do anywhere, even with C#";
+//            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+//            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+//            var response = await client.SendEmailAsync(msg);
+//        }
     }
 }
