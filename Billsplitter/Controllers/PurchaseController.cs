@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Billsplitter.Entities;
@@ -50,7 +50,7 @@ namespace Billsplitter.Controllers
         }
 
         [HttpGet("{id}/statistics"), Authorize]
-        public IActionResult GroupStatistics(int id)
+        public IActionResult GroupStatistics(int id, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
         {
             var currentUser = HttpContext.User;
 
@@ -73,14 +73,28 @@ namespace Billsplitter.Controllers
             LEFT JOIN products prd ON prd.Id = prc.ProductId
             LEFT JOIN product_categories pc ON pc.Id = prd.CategoryId
             LEFT JOIN purchase_members pm ON pm.PurchaseId = prc.Id
-            WHERE prc.GroupId = @groupId AND pm.UserId = @userId
-            GROUP BY prd.CategoryId";
+            WHERE prc.GroupId = @groupId AND pm.UserId = @userId AND prc.IsComplete = 1";
+
+            if (start != null)
+            {
+                
+                query += " AND DATE(prc.Date) > DATE(@start)";
+            }
+            
+            if (end != null)
+            {
+                query += " AND DATE(prc.Date) < DATE(@end)";
+            }
+            
+            query += " GROUP BY prd.CategoryId";
             
 
             var groupId = new MySqlParameter("@groupId", group.Id);
             var userId = new MySqlParameter("@userId", currentUserId);
-            
-            var productStatistics = _context.ProductStatistics.FromSql(query, groupId, userId).ToList();
+            var startDate = new MySqlParameter("@start", start);
+            var endDate = new MySqlParameter("@end", end);
+
+            var productStatistics = _context.ProductStatistics.FromSql(query, groupId, userId, start, end).ToList();
             
             return Ok(JsonResponse<List<ProductStatistics>>.GenerateResponse(productStatistics));
 
