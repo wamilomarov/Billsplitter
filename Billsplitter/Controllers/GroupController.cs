@@ -62,9 +62,16 @@ namespace Billsplitter.Controllers
 
             _context.Groups.Add(group);
             _context.SaveChanges();
-            
-            var members = new HashSet<string>(request.Members);
-            members.Add(user.Email);
+            if (request.Members == null)
+            {
+                request.Members = new List<string>();
+            }
+            if (!request.Members.Contains(user.Email))
+            {
+                request.Members.Add(user.Email);
+            }
+            var members = new HashSet<string>();
+            members.UnionWith(request.Members);
 
             foreach (var member in members)
             {
@@ -96,8 +103,14 @@ namespace Billsplitter.Controllers
 
             _context.SaveChanges();
 
+            var resultGroup = _context.Groups
+                .Include(i => i.Currency)
+                .Include(i => i.GroupsUsers)
+                .ThenInclude(i => i.User)
+                .Where(g => g.CreatedByUserId == user.Id)
+                .FirstOrDefault(g => g.Id == group.Id);
 
-            return Ok(new object());
+            return Ok(resultGroup);
         }
 
         [HttpPut("{id}"), Authorize]
@@ -148,8 +161,17 @@ namespace Billsplitter.Controllers
                 _context.GroupsUsers.Remove(currentMember);
             }
             
-            var members = new HashSet<string>(request.Members);
-            members.Add(user.Email);
+            if (request.Members == null)
+            {
+                request.Members = new List<string>();
+            }
+            
+            if (!request.Members.Contains(user.Email))
+            {
+                request.Members.Add(user.Email);
+            }
+            var members = new HashSet<string>();
+            members.UnionWith(request.Members);
 
             foreach (var newMember in members)
             {

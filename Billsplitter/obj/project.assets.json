@@ -2970,6 +2970,19 @@
           }
         }
       },
+      "Sendgrid/9.10.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "1.1.2",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/SendGrid.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/SendGrid.dll": {}
+        }
+      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -4442,7 +4455,7 @@
   },
   "libraries": {
     "AspNetCore.RouteAnalyzer/0.5.1": {
-      "sha512": "fMLX/jfiM/QViuZYKDOYQirZYYHoIrhGan+6PqPNI6OgTNv16rcFfvjqc7YEHZF+GHF006ZtDKCCXC/8BPx62A==",
+      "sha512": "slxBURm28TfZPlVdpOLKTa9MrBVlMgxSb5aX8Sjko/vFVXm09UaS9VBYod0554vO4tzIOqhiUJQSabjTQ+4f6g==",
       "type": "package",
       "path": "aspnetcore.routeanalyzer/0.5.1",
       "files": [
@@ -4455,7 +4468,7 @@
       ]
     },
     "CloudinaryDotNet/1.5.0": {
-      "sha512": "INoJjtb+cv0oaTbqyEoBbuNso3FCRgYC26f2Ps6h696c4QHHqN9PkkhUwQNIL84rL/aOXcw2AuvChfUjrwp4uQ==",
+      "sha512": "z8oEX/K3PHUpX67CVCdnll6NHIRfnkQEEQI+iIXhvsmLJqmgHZ/0w9UE6JfhrivXLi+Wq1/wLiK16IIpw47oGw==",
       "type": "package",
       "path": "cloudinarydotnet/1.5.0",
       "files": [
@@ -7617,6 +7630,26 @@
         "runtimes/win-x86/native/sni.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Sendgrid/9.10.0": {
+      "sha512": "i6208SyPFvZ5bJRUbOimhBF/axjhiS4xQX71+KWPhzWUJGHbGX+yfwPrUg5y0D3deQlQz94mHeWF6AGHSZ81jQ==",
+      "type": "package",
+      "path": "sendgrid/9.10.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/SendGrid.dll",
+        "lib/net452/SendGrid.pdb",
+        "lib/net452/SendGrid.xml",
+        "lib/netstandard1.3/SendGrid.dll",
+        "lib/netstandard1.3/SendGrid.pdb",
+        "lib/netstandard1.3/SendGrid.xml",
+        "lib/netstandard2.0/SendGrid.dll",
+        "lib/netstandard2.0/SendGrid.pdb",
+        "lib/netstandard2.0/SendGrid.xml",
+        "sendgrid.9.10.0.nupkg.sha512",
+        "sendgrid.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -12014,7 +12047,8 @@
       "Microsoft.EntityFrameworkCore.Tools.DotNet >= 2.0.3",
       "Microsoft.NETCore.App >= 2.1.0",
       "Pomelo.EntityFrameworkCore.MySql >= 2.1.4",
-      "Pomelo.EntityFrameworkCore.MySql.Design >= 1.1.2"
+      "Pomelo.EntityFrameworkCore.MySql.Design >= 1.1.2",
+      "SendGrid >= 9.10.0"
     ]
   },
   "packageFolders": {
@@ -12096,7 +12130,6 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
@@ -12108,6 +12141,10 @@
           "Pomelo.EntityFrameworkCore.MySql.Design": {
             "target": "Package",
             "version": "[1.1.2, )"
+          },
+          "SendGrid": {
+            "target": "Package",
+            "version": "[9.10.0, )"
           }
         },
         "imports": [

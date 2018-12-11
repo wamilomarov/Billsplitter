@@ -74,10 +74,12 @@ namespace Billsplitter.Controllers
             LEFT JOIN purchase_members pm ON pm.PurchaseId = prc.Id
             WHERE prc.GroupId = @groupId AND pm.UserId = @userId
             GROUP BY prd.CategoryId";
-            var productStatistics = _context.ProductStatistics.FromSql(query).ToList();
+            
 
-            var parameterS = new SqlParameter("@groupId", group.Id);
-            var parameterD = new SqlParameter("@userId", currentUserId);
+            var groupId = new SqlParameter("@groupId", group.Id);
+            var userId = new SqlParameter("@userId", currentUserId);
+            
+            var productStatistics = _context.ProductStatistics.FromSql(query, groupId, userId).ToList();
             
             return Ok(JsonResponse<List<ProductStatistics>>.GenerateResponse(productStatistics));
 
