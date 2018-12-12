@@ -2,20 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Billsplitter.Entities;
 using Billsplitter.Models;
-using Mailjet.Client;
-using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Controllers
 {
@@ -162,11 +154,7 @@ namespace Billsplitter.Controllers
                 group.PhotoUrl = uploadResult.PublicId;
             }
 
-            var currentMembers = _context.GroupsUsers.Where(gu => gu.GroupId == group.Id).ToList();
-            foreach (var currentMember in currentMembers)
-            {
-                _context.GroupsUsers.Remove(currentMember);
-            }
+            
             
             if (request.Members == null)
             {
@@ -177,34 +165,48 @@ namespace Billsplitter.Controllers
             {
                 request.Members.Add(user.Email);
             }
+            
+            var currentMembers = _context.GroupsUsers.Where(gu => gu.GroupId == group.Id).ToList();
+            foreach (var currentMember in currentMembers)
+            {
+                if (!request.Members.Contains(currentMember.Email)) // if old member is not in new members list
+                {
+                    _context.GroupsUsers.Remove(currentMember);
+                }
+            }
+            
             var members = new HashSet<string>();
             members.UnionWith(request.Members);
 
             foreach (var newMember in members)
             {
-                var memberData = _context.Users.FirstOrDefault(u => u.Email == newMember);
-                GroupsUsers groupUser = new GroupsUsers()
+                
+                if (!currentMembers.Exists(cm => cm.Email == newMember)) // if new member email is not in old members
                 {
-                    GroupId = group.Id
-                };
-                if (memberData == null)
-                {
-                    Users newUser = new Users()
+                    var memberData = _context.Users.FirstOrDefault(u => u.Email == newMember);
+                    GroupsUsers groupUser = new GroupsUsers()
                     {
-                        FullName = newMember,
-                        Email = newMember
+                        GroupId = group.Id
                     };
+                    if (memberData == null)
+                    {
+                        Users newUser = new Users()
+                        {
+                            FullName = newMember,
+                            Email = newMember
+                        };
 
-                    _context.Users.Add(newUser);
-                    _context.SaveChanges();
-                    groupUser.UserId = newUser.Id;
+                        _context.Users.Add(newUser);
+                        _context.SaveChanges();
+                        groupUser.UserId = newUser.Id;
+                    }
+                    else
+                    {
+                        groupUser.UserId = memberData.Id;
+                    }
+                    
+                    _context.GroupsUsers.Add(groupUser);
                 }
-                else
-                {
-                    groupUser.UserId = memberData.Id;
-                }
-
-                _context.GroupsUsers.Add(groupUser);
 
                 group.Name = request.Name;
                 group.CurrencyId = request.CurrencyId;
