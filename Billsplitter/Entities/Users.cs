@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Entities
 {
     public partial class Users
     {
+        
+        private string mailjetApiKey = "8329ba2d79e4645fbf8850c9f0753e46";
+        private string mailjetApiSecret = "aaefbd86fba6c42879e7d045ff758d87";
+        
         public Users()
         {
             Groups = new HashSet<Groups>();
@@ -37,9 +46,11 @@ namespace Billsplitter.Entities
         [IgnoreDataMember]
         public string GoogleId { get; set; }
         [IgnoreDataMember]
+        public string FacebookId { get; set; }
+        [IgnoreDataMember]
         public string Password { get; set; }
         [IgnoreDataMember]
-        public string PasswordHash { get; set; }
+        public string PasswordResetCode { get; set; }
         [IgnoreDataMember]
         public string EmailVerificationCode { get; set; }
         [IgnoreDataMember]
@@ -58,5 +69,35 @@ namespace Billsplitter.Entities
         public ICollection<Purchases> Purchases { get; set; }
         [IgnoreDataMember]
         public ICollection<RepeatingPurchases> RepeatingPurchases { get; set; }
+        
+        public string GenerateRandomString()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 8)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+
+        public async Task<MailjetResponse> SendEmailAsync(string receiver, string subject, string text)
+        {
+            var client = new MailjetClient(mailjetApiKey, mailjetApiSecret);
+            MailjetRequest request = new MailjetRequest
+                {
+                    Resource = Send.Resource,
+                }
+                .Property(Send.FromEmail, "service@billsplitter.org")
+                .Property(Send.FromName, "Billsplit")
+                .Property(Send.Subject, subject)
+                .Property(Send.HtmlPart, text)
+                .Property(Send.Recipients, new JArray {
+                    new JObject {
+                        {"Email", receiver}
+                    }
+                });
+            MailjetResponse response = await client.PostAsync(request);
+
+            return response;
+        }
     }
 }

@@ -40,6 +40,7 @@
         </e>
         <e p="Models" t="Include">
           <e p="Currency.cs" t="Include" />
+          <e p="FacebookUser.cs" t="Include" />
           <e p="GoogleUser.cs" t="Include" />
           <e p="Group.cs" t="Include" />
           <e p="Product.cs" t="Include" />

@@ -421,16 +421,18 @@ namespace Billsplitter.Entities
                     .HasColumnType("varchar(255)");
                 
                 entity.Property(e => e.GoogleId)
-                    .IsRequired()
+                    .HasColumnType("varchar(255)");
+                
+                entity.Property(e => e.FacebookId)
                     .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnType("varchar(255)");
 
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)");
+                entity.Property(e => e.PasswordResetCode)
+                    .HasColumnType("varchar(255)")
+                    .HasDefaultValueSql("NULL");
 
                 entity.Property(e => e.PhotoUrl).HasColumnType("varchar(255)");
             });

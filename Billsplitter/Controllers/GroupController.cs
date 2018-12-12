@@ -2,14 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using Billsplitter.Entities;
 using Billsplitter.Models;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SendGrid;
+using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Controllers
 {
@@ -292,18 +298,5 @@ namespace Billsplitter.Controllers
             return Ok(new object());
         }
 
-//        [HttpGet("mail")]
-//        public IActionResult()
-//        {
-//            var apiKey = Environment.GetEnvironmentVariable("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");
-//            var client = new SendGridClient(apiKey);
-//            var from = new EmailAddress("test@example.com", "Example User");
-//            var subject = "Sending with SendGrid is Fun";
-//            var to = new EmailAddress("test@example.com", "Example User");
-//            var plainTextContent = "and easy to do anywhere, even with C#";
-//            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-//            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-//            var response = await client.SendEmailAsync(msg);
-//        }
     }
 }

@@ -108,4 +108,10 @@ namespace Billsplitter.Models
         [MinLength(6), MaxLength(255)] 
         public string OldPassword { get; set; }
     }
+
+    public class PasswordResetModel
+    {
+        public string Password { get; set; }
+        public string Code { get; set; }
+    }
 }

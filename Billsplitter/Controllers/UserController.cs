@@ -173,8 +173,6 @@ namespace Billsplitter.Controllers
 
             var googleUser = JsonConvert.DeserializeObject<GoogleUser>(response);
 
-//            return Ok(googleUser);
-
             Users check =
                 _context.Users.FirstOrDefault(u => u.GoogleId == googleUser.Sub || u.Email == googleUser.Email);
             User user = null;
@@ -212,6 +210,89 @@ namespace Billsplitter.Controllers
             user.GenerateToken();
 
             return Ok(JsonResponse<User>.GenerateResponse(user));
+        }
+
+        [HttpPost("facebook")]
+        public async Task<IActionResult> FacebookLoginAsync([FromForm] FacebookLoginModel loginModel)
+        {
+            var client = new HttpClient();
+
+            var verifyTokenEndPoint =
+                string.Format($"https://graph.facebook.com/me?access_token={loginModel.Token}&fields=id,email,name,picture.type(large)");
+            var verifyAppEndpoint = string.Format("https://graph.facebook.com/app?access_token={0}", loginModel.Token);
+
+            var uri = new Uri(verifyTokenEndPoint);
+            var response = await client.GetAsync(uri);
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                dynamic userObj = (Newtonsoft.Json.Linq.JObject) Newtonsoft.Json.JsonConvert.DeserializeObject(content);
+                if (loginModel.Email != null)
+                {
+                    userObj["email"] = loginModel.Email;
+                }
+
+                uri = new Uri(verifyAppEndpoint);
+                response = await client.GetAsync(uri);
+                content = await response.Content.ReadAsStringAsync();
+                dynamic appObj = (Newtonsoft.Json.Linq.JObject) Newtonsoft.Json.JsonConvert.DeserializeObject(content);
+
+                if (appObj["id"] == _config["Facebook:AppId"])
+                {
+                    var facebookUser = new FacebookUser(userObj);
+                    Users check =
+                        _context.Users.FirstOrDefault(u => u.FacebookId == facebookUser.Sub || u.Email == facebookUser.Email);
+                    User user = null;
+                    
+                    if (check != null)
+                    {
+                        check.FacebookId = facebookUser.Sub;
+                        _context.Users.Update(check);
+                        _context.SaveChanges();
+                        user = new User(_config, check);
+                    }
+                    else
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(facebookUser.Photo)
+                        };
+
+                        var uploadResult = cloudinary.Upload(uploadParams);
+
+                        Users newUser = new Users()
+                        {
+                            FullName = facebookUser.FullName,
+                            Email = facebookUser.Email,
+                            FacebookId = facebookUser.Sub,
+                            PhotoUrl = uploadResult.PublicId
+                        };
+
+                        _context.Users.Add(newUser);
+                        _context.SaveChanges();
+                        user = new User(_config, newUser);
+                        
+                    }
+                    
+                    user.GenerateToken();
+
+                    return Ok(JsonResponse<User>.GenerateResponse(user));
+                }
+                else
+                {
+                    ModelState.AddModelError("Facebook", "Please login with right application.");
+                    return BadRequest(ModelState);
+                }
+                
+            }
+            else
+            {
+                ModelState.AddModelError("Facebook", "Please provide correct credentials for Facebook account.");
+                return BadRequest(ModelState);
+            }
+            
         }
 
         [HttpPut("me"), Authorize]
@@ -292,6 +373,58 @@ namespace Billsplitter.Controllers
             var user = _context.Users.Find(currentUserId);
 
             return Ok(JsonResponse<Users>.GenerateResponse(user));
+
+        }
+
+        [HttpPost("forgot_password")]
+        public async Task<IActionResult> ForgotPassword([FromForm] string email)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("User", "There is no user with given email.");
+                return BadRequest(ModelState);
+            }
+
+            user.PasswordResetCode = user.GenerateRandomString();
+
+
+            string html = $@"<h3>Dear {user.FullName}, we got your request to reset password.</h3>
+                            <p>Here is your password reset code, please use it to set new password.</p>";
+            var send = user.SendEmailAsync(user.Email, "Password Reset", html);
+            
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            await send;
+
+            return Ok(new object());
+        }
+
+        [HttpPost("reset_password")]
+        public IActionResult ResetPassword([FromForm] PasswordResetModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.PasswordResetCode == request.Code);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("Code", "Please try again with the correct reset code.");
+                return BadRequest(ModelState);
+            }
+
+            user.Password = new PasswordHasher<PasswordResetModel>().HashPassword(request,
+                request.Password);
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return Ok(new object());
 
         }
     }
