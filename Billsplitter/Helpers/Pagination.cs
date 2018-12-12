@@ -7,7 +7,7 @@ namespace Billsplitter.Models
 {
     public class Pagination<T>
     {
-        private IQueryable<T> _query;
+        private readonly IQueryable<T> _query;
         
         private int _maxPageSize = 20;
 
@@ -17,15 +17,15 @@ namespace Billsplitter.Models
 
         private int pageSize
         {
-            get { return _pageSize; }
-            set { _pageSize = (value > _maxPageSize) ? _maxPageSize : value; }
+            get => _pageSize;
+            set => _pageSize = (value > _maxPageSize) ? _maxPageSize : value;
         }
 
         public List<T> data;
         public JObject pagination;
 
-        private int _totalCount;
-        private int _totalPagesCount;
+        private readonly int _totalCount;
+        private readonly int _totalPagesCount;
 
         public Pagination(IQueryable<T> query, int page, int size)
         {
@@ -41,11 +41,13 @@ namespace Billsplitter.Models
         {
             data = _query.Skip((_pageNumber - 1) * pageSize).Take(pageSize).ToList();
             var result = new JObject();
-            pagination = new JObject();
-            pagination["hasNextPage"] = _totalPagesCount > (_pageNumber + 1);
-            pagination["hasPrevPage"] = _pageNumber > 1;
-            pagination["nextPageNumber"] = _totalPagesCount > (_pageNumber + 1) ? _pageNumber + 1 : 0;
-            pagination["prevPageNumber"] = _pageNumber > 1 ? _pageNumber - 1 : 0;
+            pagination = new JObject
+            {
+                ["hasNextPage"] = _totalPagesCount > (_pageNumber + 1),
+                ["hasPrevPage"] = _pageNumber > 1,
+                ["nextPageNumber"] = _totalPagesCount > (_pageNumber + 1) ? _pageNumber + 1 : 0,
+                ["prevPageNumber"] = _pageNumber > 1 ? _pageNumber - 1 : 0
+            };
             result["data"] = JToken.FromObject(data);
             result["pagination"] = pagination;
             return result;

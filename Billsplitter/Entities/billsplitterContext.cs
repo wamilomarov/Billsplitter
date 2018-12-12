@@ -29,6 +29,7 @@ namespace Billsplitter.Entities
         public virtual DbSet<RepeatingPurchases> RepeatingPurchases { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Transactions> Transactions { get; set; }
+        public DbQuery<GroupMoney> GroupMoney { get; set; }
         public DbQuery<ProductStatistics> ProductStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -15,6 +15,7 @@
           <e p="GroupController.cs" t="Include" />
           <e p="ProductController.cs" t="Include" />
           <e p="PurchaseController.cs" t="Include" />
+          <e p="TransactionController.cs" t="Include" />
           <e p="UserController.cs" t="Include" />
           <e p="ValuesController.cs" t="Include" />
         </e>
@@ -37,6 +38,7 @@
         <e p="Helpers" t="Include">
           <e p="ImageUploader.cs" t="Include" />
           <e p="JsonResponse.cs" t="Include" />
+          <e p="Money.cs" t="Include" />
           <e p="Pagination.cs" t="Include" />
         </e>
         <e p="Models" t="Include">
