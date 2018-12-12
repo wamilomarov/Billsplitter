@@ -31,6 +31,9 @@ namespace Billsplitter.Entities
         public Currencies Currency { get; set; }
         
         public ICollection<GroupsUsers> GroupsUsers { get; set; }
+        
+        [IgnoreDataMember]
+        public ICollection<Transactions> Transactions { get; set; }
         [IgnoreDataMember]
         public ICollection<HaveToBuyList> HaveToBuyList { get; set; }
         [IgnoreDataMember]

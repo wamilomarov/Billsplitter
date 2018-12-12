@@ -60,6 +60,10 @@ namespace Billsplitter.Entities
         [IgnoreDataMember]
         public ICollection<GroupsUsers> GroupsUsers { get; set; }
         [IgnoreDataMember]
+        public ICollection<Transactions> Incomes { get; set; }
+        [IgnoreDataMember]
+        public ICollection<Transactions> Outcomes { get; set; }
+        [IgnoreDataMember]
         public ICollection<HaveToBuyList> HaveToBuyList { get; set; }
         [IgnoreDataMember]
         public ICollection<Products> Products { get; set; }

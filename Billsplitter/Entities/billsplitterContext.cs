@@ -28,6 +28,7 @@ namespace Billsplitter.Entities
         public virtual DbSet<Purchases> Purchases { get; set; }
         public virtual DbSet<RepeatingPurchases> RepeatingPurchases { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Transactions> Transactions { get; set; }
         public DbQuery<ProductStatistics> ProductStatistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -141,6 +142,43 @@ namespace Billsplitter.Entities
                     .WithMany(p => p.GroupsUsers)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("GroupsUsersUserId");
+            });
+            
+            modelBuilder.Entity<Transactions>(entity =>
+            {
+                entity.ToTable("transactions");
+
+                entity.HasIndex(e => e.GroupId)
+                    .HasName("TransactionGroupId");
+
+                entity.HasIndex(e => e.PayerId)
+                    .HasName("TransactionPayerId");
+                
+                entity.HasIndex(e => e.ReceiverId)
+                    .HasName("TransactionReceiverId");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.GroupId).HasColumnType("int(11)");
+
+                entity.Property(e => e.PayerId).HasColumnType("int(11)");
+                
+                entity.Property(e => e.ReceiverId).HasColumnType("int(11)");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("TransactionGroupId");
+
+                entity.HasOne(d => d.Payer)
+                    .WithMany(p => p.Outcomes)
+                    .HasForeignKey(d => d.PayerId)
+                    .HasConstraintName("TransactionPayerId");
+                
+                entity.HasOne(d => d.Receiver)
+                    .WithMany(p => p.Incomes)
+                    .HasForeignKey(d => d.ReceiverId)
+                    .HasConstraintName("TransactionReceiverId");
             });
 
             modelBuilder.Entity<HaveToBuyList>(entity =>
