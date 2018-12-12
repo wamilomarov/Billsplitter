@@ -392,7 +392,7 @@ namespace Billsplitter.Controllers
             var user = new User(_config, userData);
             
             string html = $@"<h3>Dear {user.FullName}, we got your request to reset password.</h3>
-                            <p>Here is your password reset code, please use it to set new password.</p>";
+                            <p>Here is your password reset code: {userData.PasswordResetCode}</p> <p>Please use it to set new password.</p>";
             var send = user.SendEmailAsync(user.Email, "Password Reset", html);
             
             _context.Users.Update(userData);

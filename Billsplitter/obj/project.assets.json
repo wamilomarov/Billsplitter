@@ -27,6 +27,19 @@
           "lib/netstandard1.3/CloudinaryDotNet.dll": {}
         }
       },
+      "Mailjet.Api/1.2.2": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.1/Mailjet.Client.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Mailjet.Client.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
         "type": "package",
         "dependencies": {
@@ -2970,17 +2983,39 @@
           }
         }
       },
-      "Sendgrid/9.10.0": {
+      "SendGrid.CSharp.HTTP.Client/3.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/SendGrid.CSharp.HTTP.Client.dll": {}
+        },
+        "runtime": {
+          "lib/SendGrid.CSharp.HTTP.Client.dll": {}
+        }
+      },
+      "SendGrid.SmtpApi/1.3.3": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Http.Abstractions": "1.1.2",
           "Newtonsoft.Json": "9.0.1"
         },
         "compile": {
-          "lib/netstandard2.0/SendGrid.dll": {}
+          "lib/SendGrid.SmtpApi.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/SendGrid.dll": {}
+          "lib/SendGrid.SmtpApi.dll": {}
+        }
+      },
+      "SendGridClient/1.2.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Newtonsoft.Json": "9.0.1",
+          "System.Net.Http": "4.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.5/SendGridClient.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.5/SendGridClient.dll": {}
         }
       },
       "System.AppContext/4.3.0": {
@@ -4455,7 +4490,7 @@
   },
   "libraries": {
     "AspNetCore.RouteAnalyzer/0.5.1": {
-      "sha512": "slxBURm28TfZPlVdpOLKTa9MrBVlMgxSb5aX8Sjko/vFVXm09UaS9VBYod0554vO4tzIOqhiUJQSabjTQ+4f6g==",
+      "sha512": "fMLX/jfiM/QViuZYKDOYQirZYYHoIrhGan+6PqPNI6OgTNv16rcFfvjqc7YEHZF+GHF006ZtDKCCXC/8BPx62A==",
       "type": "package",
       "path": "aspnetcore.routeanalyzer/0.5.1",
       "files": [
@@ -4468,7 +4503,7 @@
       ]
     },
     "CloudinaryDotNet/1.5.0": {
-      "sha512": "z8oEX/K3PHUpX67CVCdnll6NHIRfnkQEEQI+iIXhvsmLJqmgHZ/0w9UE6JfhrivXLi+Wq1/wLiK16IIpw47oGw==",
+      "sha512": "INoJjtb+cv0oaTbqyEoBbuNso3FCRgYC26f2Ps6h696c4QHHqN9PkkhUwQNIL84rL/aOXcw2AuvChfUjrwp4uQ==",
       "type": "package",
       "path": "cloudinarydotnet/1.5.0",
       "files": [
@@ -4482,6 +4517,18 @@
         "lib/netcore/CloudinaryDotNet.dll",
         "lib/netstandard1.3/CloudinaryDotNet.deps.json",
         "lib/netstandard1.3/CloudinaryDotNet.dll"
+      ]
+    },
+    "Mailjet.Api/1.2.2": {
+      "sha512": "EyuZ4zPv4fGjQDBR78TTPW7BQ16Vd+vPmzN0RK2RCIfvDH9jBN7uSBCh4AmLikiesLGjof2UaOoRiHZl521ghA==",
+      "type": "package",
+      "path": "mailjet.api/1.2.2",
+      "files": [
+        ".signature.p7s",
+        "lib/net45/Mailjet.Client.dll",
+        "lib/netstandard1.1/Mailjet.Client.dll",
+        "mailjet.api.1.2.2.nupkg.sha512",
+        "mailjet.api.nuspec"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -7632,24 +7679,45 @@
         "version.txt"
       ]
     },
-    "Sendgrid/9.10.0": {
-      "sha512": "i6208SyPFvZ5bJRUbOimhBF/axjhiS4xQX71+KWPhzWUJGHbGX+yfwPrUg5y0D3deQlQz94mHeWF6AGHSZ81jQ==",
+    "SendGrid.CSharp.HTTP.Client/3.3.0": {
+      "sha512": "pv4Y/FUKmAs3UleWHfVhETL+c+GeRVa8zy16VKK2P4dwMB7oW715PZ4s1simFRAOgX02Php/kSiI7JPhtxx2qw==",
       "type": "package",
-      "path": "sendgrid/9.10.0",
+      "path": "sendgrid.csharp.http.client/3.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net452/SendGrid.dll",
-        "lib/net452/SendGrid.pdb",
-        "lib/net452/SendGrid.xml",
-        "lib/netstandard1.3/SendGrid.dll",
-        "lib/netstandard1.3/SendGrid.pdb",
-        "lib/netstandard1.3/SendGrid.xml",
-        "lib/netstandard2.0/SendGrid.dll",
-        "lib/netstandard2.0/SendGrid.pdb",
-        "lib/netstandard2.0/SendGrid.xml",
-        "sendgrid.9.10.0.nupkg.sha512",
-        "sendgrid.nuspec"
+        "lib/SendGrid.CSharp.HTTP.Client.dll",
+        "lib/SendGrid.CSharp.HTTP.Client.dll.config",
+        "lib/SendGrid.CSharp.HTTP.Client.pdb",
+        "sendgrid.csharp.http.client.3.3.0.nupkg.sha512",
+        "sendgrid.csharp.http.client.nuspec"
+      ]
+    },
+    "SendGrid.SmtpApi/1.3.3": {
+      "sha512": "lCWoZM2U77PVHAVedRNWhh5h47kjFeOjwxxQoTgPRKJb2DoTBDxuzswhkBOFhOle1mCBcvPWWRBVZ1aS4/HiZg==",
+      "type": "package",
+      "path": "sendgrid.smtpapi/1.3.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/SendGrid.SmtpApi.dll",
+        "lib/SendGrid.SmtpApi.dll.config",
+        "lib/SendGrid.SmtpApi.pdb",
+        "lib/SendGrid.SmtpApi.xml",
+        "sendgrid.smtpapi.1.3.3.nupkg.sha512",
+        "sendgrid.smtpapi.nuspec"
+      ]
+    },
+    "SendGridClient/1.2.0": {
+      "sha512": "PpisQVzDbj2SAuHjzMVF/+ABuB85lv2dlYLehzu/Gxm3NjxdixAAP64u/7fjMRuxL/O5Ffmz7FQqtDQjDFllPQ==",
+      "type": "package",
+      "path": "sendgridclient/1.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.5/SendGridClient.dll",
+        "sendgridclient.1.2.0.nupkg.sha512",
+        "sendgridclient.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -12039,6 +12107,7 @@
     ".NETCoreApp,Version=v2.1": [
       "AspNetCore.RouteAnalyzer >= 0.5.1",
       "CloudinaryDotNet >= 1.5.0",
+      "Mailjet.Api >= 1.2.2",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.EntityFrameworkCore >= 2.1.4",
@@ -12048,7 +12117,9 @@
       "Microsoft.NETCore.App >= 2.1.0",
       "Pomelo.EntityFrameworkCore.MySql >= 2.1.4",
       "Pomelo.EntityFrameworkCore.MySql.Design >= 1.1.2",
-      "SendGrid >= 9.10.0"
+      "SendGrid.CSharp.HTTP.Client >= 3.3.0",
+      "SendGrid.SmtpApi >= 1.3.3",
+      "SendGridClient >= 1.2.0"
     ]
   },
   "packageFolders": {
@@ -12100,6 +12171,10 @@
             "target": "Package",
             "version": "[1.5.0, )"
           },
+          "Mailjet.Api": {
+            "target": "Package",
+            "version": "[1.2.2, )"
+          },
           "Microsoft.AspNetCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -12130,6 +12205,7 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
@@ -12142,9 +12218,17 @@
             "target": "Package",
             "version": "[1.1.2, )"
           },
-          "SendGrid": {
+          "SendGrid.CSharp.HTTP.Client": {
             "target": "Package",
-            "version": "[9.10.0, )"
+            "version": "[3.3.0, )"
+          },
+          "SendGrid.SmtpApi": {
+            "target": "Package",
+            "version": "[1.3.3, )"
+          },
+          "SendGridClient": {
+            "target": "Package",
+            "version": "[1.2.0, )"
           }
         },
         "imports": [
@@ -12154,5 +12238,27 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SendGrid.CSharp.HTTP.Client 3.3.0' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "SendGrid.CSharp.HTTP.Client",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'SendGrid.SmtpApi 1.3.3' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "SendGrid.SmtpApi",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    }
+  ]
 }
