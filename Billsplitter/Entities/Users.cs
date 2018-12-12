@@ -5,15 +5,14 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Entities
 {
     public partial class Users
     {
-        
-        private string mailjetApiKey = "8329ba2d79e4645fbf8850c9f0753e46";
-        private string mailjetApiSecret = "aaefbd86fba6c42879e7d045ff758d87";
+        private readonly IConfiguration _config;
         
         public Users()
         {
@@ -24,6 +23,11 @@ namespace Billsplitter.Entities
             PurchaseMembers = new HashSet<PurchaseMembers>();
             Purchases = new HashSet<Purchases>();
             RepeatingPurchases = new HashSet<RepeatingPurchases>();
+        }
+
+        public Users(IConfiguration configuration)
+        {
+            _config = configuration;
         }
 
         public int Id { get; set; }
@@ -81,7 +85,7 @@ namespace Billsplitter.Entities
 
         public async Task<MailjetResponse> SendEmailAsync(string receiver, string subject, string text)
         {
-            var client = new MailjetClient(mailjetApiKey, mailjetApiSecret);
+            var client = new MailjetClient(_config["Mailjet:ApiKey"], _config["Mailjet:ApiSecret"]);
             MailjetRequest request = new MailjetRequest
                 {
                     Resource = Send.Resource,
