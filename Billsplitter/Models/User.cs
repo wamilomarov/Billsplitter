@@ -5,10 +5,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Billsplitter.Entities;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace Billsplitter.Models
 {
@@ -63,6 +67,27 @@ namespace Billsplitter.Models
                 signingCredentials: creds);
 
             ApiToken = new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        
+        public async Task<MailjetResponse> SendEmailAsync(string receiver, string subject, string text)
+        {
+            var client = new MailjetClient(_config["Mailjet:ApiKey"], _config["Mailjet:ApiSecret"]);
+            MailjetRequest request = new MailjetRequest
+                {
+                    Resource = Send.Resource,
+                }
+                .Property(Send.FromEmail, "service@billsplitter.org")
+                .Property(Send.FromName, "Billsplit")
+                .Property(Send.Subject, subject)
+                .Property(Send.HtmlPart, text)
+                .Property(Send.Recipients, new JArray {
+                    new JObject {
+                        {"Email", receiver}
+                    }
+                });
+            MailjetResponse response = await client.PostAsync(request);
+
+            return response;
         }
     }
 

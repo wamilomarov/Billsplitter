@@ -379,22 +379,23 @@ namespace Billsplitter.Controllers
         [HttpPost("forgot_password")]
         public async Task<IActionResult> ForgotPassword([FromForm] string email)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            
+            var userData = _context.Users.FirstOrDefault(u => u.Email == email);
 
-            if (user == null)
+            if (userData == null)
             {
                 ModelState.AddModelError("User", "There is no user with given email.");
                 return BadRequest(ModelState);
             }
-
-            user.PasswordResetCode = user.GenerateRandomString();
-
-
+            userData.PasswordResetCode = userData.GenerateRandomString();
+            
+            var user = new User(_config, userData);
+            
             string html = $@"<h3>Dear {user.FullName}, we got your request to reset password.</h3>
                             <p>Here is your password reset code, please use it to set new password.</p>";
             var send = user.SendEmailAsync(user.Email, "Password Reset", html);
             
-            _context.Users.Update(user);
+            _context.Users.Update(userData);
             _context.SaveChanges();
 
             await send;

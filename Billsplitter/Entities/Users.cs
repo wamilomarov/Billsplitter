@@ -12,7 +12,7 @@ namespace Billsplitter.Entities
 {
     public partial class Users
     {
-        private readonly IConfiguration _config;
+     
         
         public Users()
         {
@@ -25,10 +25,6 @@ namespace Billsplitter.Entities
             RepeatingPurchases = new HashSet<RepeatingPurchases>();
         }
 
-        public Users(IConfiguration configuration)
-        {
-            _config = configuration;
-        }
 
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -82,26 +78,5 @@ namespace Billsplitter.Entities
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-
-        public async Task<MailjetResponse> SendEmailAsync(string receiver, string subject, string text)
-        {
-            var client = new MailjetClient(_config["Mailjet:ApiKey"], _config["Mailjet:ApiSecret"]);
-            MailjetRequest request = new MailjetRequest
-                {
-                    Resource = Send.Resource,
-                }
-                .Property(Send.FromEmail, "service@billsplitter.org")
-                .Property(Send.FromName, "Billsplit")
-                .Property(Send.Subject, subject)
-                .Property(Send.HtmlPart, text)
-                .Property(Send.Recipients, new JArray {
-                    new JObject {
-                        {"Email", receiver}
-                    }
-                });
-            MailjetResponse response = await client.PostAsync(request);
-
-            return response;
-        }
     }
 }
