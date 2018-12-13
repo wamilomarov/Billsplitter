@@ -34,6 +34,7 @@ namespace Billsplitter.Controllers
 
             var purchases = _context.Purchases
                 .Where(p => p.GroupId == groupId &&
+                            p.Show == true &&
                             p.Group.GroupsUsers
                                 .Any(gu => gu.UserId == currentUserId &&
                                            gu.GroupId == p.GroupId))
