@@ -172,6 +172,10 @@ namespace Billsplitter.Controllers
                 if (!request.Members.Contains(currentMember.Email)) // if old member is not in new members list
                 {
                     _context.GroupsUsers.Remove(currentMember);
+                    _context.PurchaseMembers
+                        .RemoveRange(_context.PurchaseMembers
+                            .Where(pm => pm.Purchase.GroupId == group.Id && 
+                                         pm.UserId == currentMember.UserId));
                 }
             }
             
