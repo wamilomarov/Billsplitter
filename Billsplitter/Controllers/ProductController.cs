@@ -1,13 +1,10 @@
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Billsplitter.Entities;
 using Billsplitter.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace Billsplitter.Controllers

@@ -69,33 +69,20 @@ namespace Billsplitter.Controllers
                 return BadRequest(ModelState);
             }
 
-
-            var query = @"SELECT pc.Id, pc.Name, SUM(prc.Price) AS AmountSpent, pc.Color FROM purchases prc
-            LEFT JOIN products prd ON prd.Id = prc.ProductId
-            LEFT JOIN product_categories pc ON pc.Id = prd.CategoryId
-            LEFT JOIN purchase_members pm ON pm.PurchaseId = prc.Id
-            WHERE prc.GroupId = @groupId AND pm.UserId = @userId AND prc.IsComplete = 1";
-
-            if (start != null)
-            {
-                
-                query += " AND DATE(prc.Date) > DATE(@start)";
-            }
-            
-            if (end != null)
-            {
-                query += " AND DATE(prc.Date) < DATE(@end)";
-            }
-            
-            query += " GROUP BY prd.CategoryId";
-            
-
-            var groupId = new MySqlParameter("@groupId", group.Id);
-            var userId = new MySqlParameter("@userId", currentUserId);
-            var startDate = new MySqlParameter("@start", start);
-            var endDate = new MySqlParameter("@end", end);
-
-            var productStatistics = _context.ProductStatistics.FromSql(query, groupId, userId, start, end).ToList();
+            var productStatistics = _context.Purchases
+                .Where(prc => prc.GroupId == group.Id &&
+                              prc.PurchaseMembers.Any(pm => pm.UserId == currentUserId) &&
+                              prc.IsComplete == true &&
+                              (start == null || prc.Date.Value.Date >= start.Value.Date) &&
+                              (end == null || prc.Date.Value.Date <= end.Value.Date))
+                .GroupBy(g => g.Product.Category)
+                .Select(s => new ProductStatistics()
+                {
+                    Id = s.Key.Id, 
+                    Name = s.Key.Name, 
+                    Color = s.Key.Color, 
+                    AmountSpent = s.Sum(sum => sum.Price)
+                }).ToList();
             
             return Ok(JsonResponse<List<ProductStatistics>>.GenerateResponse(productStatistics));
 
