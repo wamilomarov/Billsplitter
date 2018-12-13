@@ -31,6 +31,7 @@ namespace Billsplitter.Models
 
     public class Payment
     {
+        public int PayerId { get; set; }
         public int ReceiverId { get; set; }
         public int GroupId { get; set; }
         public decimal Amount { get; set; }

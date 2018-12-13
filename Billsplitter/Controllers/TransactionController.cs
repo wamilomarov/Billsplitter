@@ -62,6 +62,7 @@ namespace Billsplitter.Controllers
 
             var group = _context.Groups
                 .FirstOrDefault(g => g.Id == request.GroupId &&
+                                     g.GroupsUsers.Any(gu => gu.UserId == request.PayerId) &&
                                      g.GroupsUsers.Any(gu => gu.UserId == request.ReceiverId) &&
                                      g.GroupsUsers.Any(gu => gu.UserId == currentUserId));
 
@@ -73,7 +74,7 @@ namespace Billsplitter.Controllers
             
             var transaction = new Transactions()
             {
-                PayerId = currentUserId,
+                PayerId = request.PayerId,
                 ReceiverId = request.ReceiverId,
                 GroupId = request.GroupId,
                 Amount = request.Amount
