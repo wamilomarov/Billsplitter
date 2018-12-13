@@ -26,42 +26,42 @@ namespace Billsplitter.Models
         
         public List<GroupMoney> Owe()
         {
-            
 
-            const string query = @"SELECT
-                        p.PaidByUserId AS UserId,
-                        
-                            ( COALESCE(
-                                 SUM(p.Price /(SELECT COALESCE(COUNT(1), 0) 
-                                                FROM purchase_members 
-                                                WHERE purchase_members.PurchaseId = p.Id)
-                                   ), 0
-                                      ) -
-                                 (SELECT COALESCE(SUM(Amount), 0) 
-                                  FROM transactions 
-                                  WHERE PayerId = @userId AND ReceiverId = p.PaidByUserId AND GroupId = @groupId
-                                 )
-                            )
-                             AS `Value`
-                        FROM
-                            purchases p
-                            INNER JOIN purchase_members pm ON pm.PurchaseId = p.Id AND pm.UserId = @userId
-                        WHERE
-                            p.GroupId = @groupId AND p.PaidByUSerId != @userId AND p.IsComplete = 1 AND p.PaidByUserId IS NOT NULL
-                        GROUP BY
-                            p.PaidByUserId";
-            
-            var userId = new MySqlParameter("@userId", _userId);
-            var groupId = new MySqlParameter("@groupId", _groupId);
+            var purchases = _context.Purchases
+                .Where(p => p.PaidByUserId != _userId &&
+                            p.GroupId == _groupId &&
+                            p.PaidByUserId != null &&
+                            p.IsComplete == true &&
+                            p.PurchaseMembers.Any(pm => pm.UserId == _userId))
+                .GroupBy(g => g.PaidByUserId)
+                .Select(i => new GroupMoney(){UserId = i.Key.Value, Value = i.Sum(sum => sum.Price / sum.PurchaseMembers.Count())})
+                .ToList();
 
-            var groupMoney = _context.GroupMoney.FromSql(query, groupId, userId).ToList();
+            var transactions = _context.Transactions
+                .Where(t => t.GroupId == _groupId &&
+                            t.PayerId == _userId &&
+                            t.Group.GroupsUsers.Any(gu => gu.UserId == t.ReceiverId))
+                .GroupBy(g => g.ReceiverId)
+                .Select(i => new GroupMoney() {UserId = i.Key, Value = i.Sum(sum => sum.Amount)})
+                .ToList();
+            
+            var groupMoney = new List<GroupMoney>();
 
             foreach (var user in _groupUsers)
             {
-                if (!groupMoney.Exists(gm => gm.UserId == user.UserId))
+                var item = new GroupMoney(){UserId = user.UserId, Value = 0};
+                
+                if (purchases.Exists(p => p.UserId == user.UserId))
                 {
-                    groupMoney.Add(new GroupMoney(){UserId = user.UserId, Value = 0});
+                    item.Value += purchases.FirstOrDefault(p => p.UserId == item.UserId).Value;
                 }
+                
+                if (transactions.Exists(p => p.UserId == user.UserId))
+                {
+                    item.Value -= transactions.FirstOrDefault(t => t.UserId == item.UserId).Value;
+                }
+
+                groupMoney.Add(item);
             }
 
             return groupMoney;
