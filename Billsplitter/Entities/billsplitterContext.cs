@@ -180,6 +180,10 @@ namespace Billsplitter.Entities
                     .WithMany(p => p.Incomes)
                     .HasForeignKey(d => d.ReceiverId)
                     .HasConstraintName("TransactionReceiverId");
+                
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("timestamp")
+                    .HasDefaultValueSql("'CURRENT_TIMESTAMP'");
             });
 
             modelBuilder.Entity<HaveToBuyList>(entity =>
