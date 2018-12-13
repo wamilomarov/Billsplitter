@@ -28,4 +28,11 @@ namespace Billsplitter.Models
         public List<GroupMoney> IOwe { get; set; }
         public List<GroupMoney> TheyOwe { get; set; }
     }
+
+    public class Payment
+    {
+        public int ReceiverId { get; set; }
+        public int GroupId { get; set; }
+        public decimal Amount { get; set; }
+    }
 }

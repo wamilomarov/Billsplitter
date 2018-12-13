@@ -96,7 +96,7 @@ namespace Billsplitter.Models
                 var owes = new GroupMoney()
                 {
                     UserId = user.UserId,
-                    Value = transactions
+                    Value = owe - transactions
                 };
                 
                 groupMoney.Add(owes);

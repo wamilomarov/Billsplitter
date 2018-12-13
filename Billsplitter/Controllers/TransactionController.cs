@@ -46,5 +46,44 @@ namespace Billsplitter.Controllers
             
             return Ok(JsonResponse<GroupOwes>.GenerateResponse(result));
         }
+
+        [HttpPost, Authorize]
+        public IActionResult Post([FromForm] Payment request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var currentUser = HttpContext.User;
+
+            var currentUserId = int.Parse(currentUser.Claims
+                .FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sid)?.Value);
+
+            var group = _context.Groups
+                .FirstOrDefault(g => g.Id == request.GroupId &&
+                                     g.GroupsUsers.Any(gu => gu.UserId == request.ReceiverId) &&
+                                     g.GroupsUsers.Any(gu => gu.UserId == currentUserId));
+
+            if (group == null)
+            {
+                ModelState.AddModelError("Group", "You can not make this transaction in this group.");
+                return BadRequest(ModelState);
+            }
+            
+            var transaction = new Transactions()
+            {
+                PayerId = currentUserId,
+                ReceiverId = request.ReceiverId,
+                GroupId = request.GroupId,
+                Amount = request.Amount
+            };
+
+            _context.Transactions.Add(transaction);
+            _context.SaveChanges();
+
+            return Ok(new object());
+
+        }
     }
 }
